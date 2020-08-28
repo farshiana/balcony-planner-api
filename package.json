@@ -1,6 +1,7 @@
 {
     "scripts": {
-        "start": "nodemon --exec babel-node server.js"
+        "start": "nodemon --exec babel-node server.js",
+        "lint": "eslint ."
     },
     "name": "balcony-planner-api",
     "version": "1.0.0",
