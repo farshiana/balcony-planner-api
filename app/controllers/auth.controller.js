@@ -4,7 +4,7 @@ import db from '../models/models';
 import config from '../config/auth.config';
 import { ROLE_USER } from '../constants';
 
-const { User } = db;
+const { User, Role } = db;
 
 export const register = async (req, res) => {
     try {
@@ -14,7 +14,9 @@ export const register = async (req, res) => {
             password: bcrypt.hashSync(req.body.password, 8),
         });
 
-        await user.setRoles(ROLE_USER);
+        const role = await Role.findOne({ where: { name: ROLE_USER } });
+        await user.setRoles(role);
+
         res.send({ message: 'User was created' });
     } catch (error) {
         res.status(500).send({ message: error.message });
