@@ -16,7 +16,8 @@ fs.readdirSync(__dirname)
     .forEach((file) => {
         // eslint-disable-next-line import/no-dynamic-require, global-require
         const model = require(path.join(__dirname, file)).default(sequelize, Sequelize.DataTypes);
-        db[model.name] = model;
+        const name = file.split('.')[0];
+        db[name.charAt(0).toUpperCase() + name.slice(1)] = model;
     });
 
 Object.keys(db).forEach((modelName) => {
@@ -27,17 +28,6 @@ Object.keys(db).forEach((modelName) => {
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
-
-// db.role.belongsToMany(db.user, {
-//     through: "user_roles",
-//     foreignKey: "roleId",
-//     otherKey: "userId"
-//   });
-//   db.user.belongsToMany(db.role, {
-//     through: "user_roles",
-//     foreignKey: "userId",
-//     otherKey: "roleId"
-//   });
 
 db.ROLES = ROLES;
 

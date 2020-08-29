@@ -25,7 +25,7 @@ export const checkToken = (req, res, next) => {
 export const checkAdmin = async (req, res, next) => {
     const user = await User.findByPk(req.userId);
 
-    const roles = await user.getRoles();
+    const roles = await User.getRoles();
 
     return roles.includes(ROLE_ADMIN) ? next()
         : res.status(403).send({ message: 'Admin role is required' });
