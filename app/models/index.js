@@ -9,10 +9,10 @@ const dbConfig = config[env];
 const db = {};
 
 const sequelize = dbConfig.use_env_variable ? new Sequelize(process.env[dbConfig.use_env_variable], dbConfig)
-  : new Sequelize(dbConfig.database, dbConfig.username, dbConfig.password, dbConfig);
+    : new Sequelize(dbConfig.database, dbConfig.username, dbConfig.password, dbConfig);
 
 fs.readdirSync(__dirname)
-    .filter(file => (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js'))
+    .filter((file) => (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js'))
     .forEach((file) => {
         const model = require(path.join(__dirname, file))(sequelize, Sequelize.DataTypes);
         db[model.name] = model;
@@ -23,7 +23,6 @@ Object.keys(db).forEach((modelName) => {
         db[modelName].associate(db);
     }
 });
-
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
