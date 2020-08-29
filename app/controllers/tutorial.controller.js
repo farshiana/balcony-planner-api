@@ -27,7 +27,7 @@ exports.create = (req, res) => {
         .catch((err) => {
             res.status(500).send({
                 message:
-            err.message || 'Some error occurred while creating the Tutorial.',
+            error.message || 'Some error occurred while creating the Tutorial.',
             });
         });
 };
@@ -43,7 +43,7 @@ exports.findAll = (req, res) => {
         .catch((err) => {
             res.status(500).send({
                 message:
-            err.message || 'Some error occurred while retrieving tutorials.',
+            error.message || 'Some error occurred while retrieving tutorials.',
             });
         });
 };
@@ -121,7 +121,7 @@ exports.deleteAll = (req, res) => {
         .catch((err) => {
             res.status(500).send({
                 message:
-            err.message || 'Some error occurred while removing all tutorials.',
+            error.message || 'Some error occurred while removing all tutorials.',
             });
         });
 };
@@ -134,7 +134,7 @@ exports.findAllPublished = (req, res) => {
         .catch((err) => {
             res.status(500).send({
                 message:
-            err.message || 'Some error occurred while retrieving tutorials.',
+            error.message || 'Some error occurred while retrieving tutorials.',
             });
         });
 };
