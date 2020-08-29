@@ -11,12 +11,15 @@ const db = {};
 
 const sequelize = new Sequelize(dbConfig.database, dbConfig.username, dbConfig.password, dbConfig);
 
+const toCamel = s => s.replace(/([-_][a-z])/ig, $1 => $1.toUpperCase().replace('-', '').replace('_', ''));
+
 fs.readdirSync(__dirname)
     .filter((file) => (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js'))
     .forEach((file) => {
         // eslint-disable-next-line import/no-dynamic-require, global-require
         const model = require(path.join(__dirname, file)).default(sequelize, Sequelize.DataTypes);
-        const name = file.split('.')[0];
+        const name = toCamel(file.split('.')[0]);
+
         db[name.charAt(0).toUpperCase() + name.slice(1)] = model;
     });
 

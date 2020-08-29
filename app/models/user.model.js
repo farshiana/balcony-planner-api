@@ -28,9 +28,8 @@ export default (sequelize, Sequelize) => {
 
     User.associate = (models) => {
         User.belongsToMany(models.Role, {
-            through: 'user_roles',
+            through: 'users_roles',
             foreignKey: 'userId',
-            otherKey: 'roleId',
             as: 'roles',
         });
     };
