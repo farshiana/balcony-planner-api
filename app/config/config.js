@@ -1,10 +1,10 @@
 require('dotenv').config();
 
-export default {
-    development: {
+module.exports = {
+     development: {
         database: 'balcony_planner_dev',
-        username: 'postgres',
-        password: null,
+        username: 'admin',
+        password: 'password',
         host: '127.0.0.1',
         dialect: 'postgres'
     },

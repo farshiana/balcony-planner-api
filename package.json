@@ -1,12 +1,11 @@
 {
-    "scripts": {
-        "start": "nodemon --exec babel-node server.js",
-        "lint": "eslint ."
-    },
     "name": "balcony-planner-api",
     "version": "1.0.0",
-    "main": "index.js",
-    "license": "MIT",
+    "private": true,
+    "scripts": {
+        "start": "nodemon --exec babel-node app/server.js",
+        "lint": "eslint ."
+    },
     "dependencies": {
         "bcryptjs": "^2.4.3",
         "body-parser": "^1.19.0",
@@ -29,5 +28,14 @@
         "eslint-plugin-import": "^2.22.0",
         "nodemon": "^2.0.4",
         "sequelize-cli": "^6.2.0"
+    },
+    "gitHooks": {
+        "pre-commit": "lint-staged"
+    },
+    "lint-staged": {
+        "*.js": [
+            "yarn lint",
+            "git add"
+        ]
     }
 }

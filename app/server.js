@@ -2,8 +2,8 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import logger from 'morgan';
-import tutorial from '../routes/tutorial.routes';
-import db from '../models/index';
+import tutorial from './routes/tutorial.routes';
+import db from './models/index';
 
 const app = express();
 const PORT = process.env.PORT || 8080;
