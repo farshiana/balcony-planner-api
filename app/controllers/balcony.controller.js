@@ -11,7 +11,7 @@ export const addBalcony = async (req, res) => {
     }
 };
 
-export const getBalconies = async (req, res) => {
+export const getAllBalconies = async (req, res) => {
     try {
         const balconies = await res.locals.user.getBalconies();
         res.status(201).send(balconies);

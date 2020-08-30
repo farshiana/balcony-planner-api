@@ -1,6 +1,6 @@
 import db from '../models/models';
 
-const Genus = db;
+const { Genus } = db;
 
 export const addGenus = async (req, res) => {
     try {
@@ -14,7 +14,7 @@ export const addGenus = async (req, res) => {
     }
 };
 
-export const getGenera = async (req, res) => {
+export const getAllGenera = async (req, res) => {
     try {
         const genera = await Genus.findAll();
         res.status(201).send(genera);

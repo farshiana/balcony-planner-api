@@ -1,5 +1,5 @@
 import { body } from 'express-validator';
-import { addGenus, getGenera, updateGenus } from '../controllers/genus.controller';
+import { addGenus, getAllGenera, updateGenus } from '../controllers/genus.controller';
 import validator from '../middlewares/validator.middleware';
 import { checkAuth, checkAdmin } from '../middlewares/auth.middleware';
 import { CATEGORIES } from '../constants';
@@ -10,5 +10,5 @@ const category = body('category').isIn(CATEGORIES);
 export default (app) => {
     app.post('/genera', checkAuth, checkAdmin, validator(name, category), addGenus);
     app.put('/genera/:genusId', checkAuth, checkAdmin, validator(name, category), updateGenus);
-    app.get('/genera', checkAuth, getGenera);
+    app.get('/genera', checkAuth, getAllGenera);
 };
