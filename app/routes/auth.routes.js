@@ -1,11 +1,11 @@
-import Joi from 'joi';
+import { body } from 'express-validator';
 import { checkDuplicates } from '../middlewares/auth.middleware';
 import { register, login } from '../controllers/auth.controller';
-import validation from '../middlewares/validation.middleware';
+import validator from '../middlewares/validator.middleware';
 
-const email = Joi.string().email().required();
-const username = Joi.string().required();
-const password = Joi.string().min(12).pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).required();
+const email = body('email').isEmail().normalizeEmail();
+const username = body('username').trim().escape().notEmpty();
+const password = body('password').isLength({ min: 12 });
 
 export default (app) => {
     app.use((req, res, next) => {
@@ -13,10 +13,11 @@ export default (app) => {
         next();
     });
 
-    app.post('/auth/register', [
-        validation({ email, username, password }),
+    app.post('/auth/register',
+        validator(email, username, password),
         checkDuplicates,
-    ], register, login);
+        register,
+        login);
 
-    app.post('/auth/login', [validation({ username, password })], login);
+    app.post('/auth/login', validator(username, password), login);
 };
