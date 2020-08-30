@@ -1,9 +1,9 @@
 export default (sequelize, Sequelize) => sequelize.define('roles', {
     id: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
         primaryKey: true,
         allowNull: false,
-        autoIncrement: true,
+        defaultValue: Sequelize.UUIDV4,
     },
     name: {
         type: Sequelize.STRING,

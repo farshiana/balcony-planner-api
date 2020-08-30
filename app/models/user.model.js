@@ -1,10 +1,10 @@
 export default (sequelize, Sequelize) => {
     const User = sequelize.define('users', {
         id: {
-            type: Sequelize.INTEGER,
+            type: Sequelize.UUID,
             primaryKey: true,
             allowNull: false,
-            autoIncrement: true,
+            defaultValue: Sequelize.UUIDV4,
         },
         username: {
             type: Sequelize.STRING,
