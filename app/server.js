@@ -6,8 +6,9 @@ import session from 'express-session';
 import connect from 'connect-session-sequelize';
 import helmet from 'helmet';
 import auth from './routes/auth.routes';
-import balcony from './routes/balcony.routes';
-import genus from './routes/genus.routes';
+import balconies from './routes/balconies.routes';
+import genera from './routes/genera.routes';
+import varieties from './routes/varieties.routes';
 import db from './models/models';
 import { ROLE_USER, ROLE_ADMIN } from './constants';
 import config from './config/auth.config';
@@ -46,7 +47,8 @@ db.sequelize.sync({ force: true }).then(() => {
 });
 
 auth(app);
-balcony(app);
-genus(app);
+balconies(app);
+genera(app);
+varieties(app);
 
 app.listen(PORT, () => { console.log(`Server is running on port ${PORT}.`); });

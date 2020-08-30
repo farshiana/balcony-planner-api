@@ -1,5 +1,5 @@
 import { body } from 'express-validator';
-import { addBalcony, getAllBalconies, updateBalcony } from '../controllers/balcony.controller';
+import { addBalcony, getAllBalconies, updateBalcony } from '../controllers/balconies.controller';
 import validator from '../middlewares/validator.middleware';
 import { checkAuth } from '../middlewares/auth.middleware';
 

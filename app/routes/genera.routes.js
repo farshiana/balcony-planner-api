@@ -1,5 +1,5 @@
 import { body } from 'express-validator';
-import { addGenus, getAllGenera, updateGenus } from '../controllers/genus.controller';
+import { addGenus, getAllGenera, updateGenus } from '../controllers/genera.controller';
 import validator from '../middlewares/validator.middleware';
 import { checkAuth, checkAdmin } from '../middlewares/auth.middleware';
 import { CATEGORIES } from '../constants';
