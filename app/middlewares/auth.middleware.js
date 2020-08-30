@@ -33,5 +33,6 @@ export const checkAuth = async (req, res, next) => {
 export const checkAdmin = async (req, res, next) => {
     const roles = await res.locals.user.getRoles();
 
-    return roles.find(role => role.name === ROLE_ADMIN) ? next() : res.status(403).send({ message: 'Admin role is required' });
+    return roles.find((role) => role.name === ROLE_ADMIN) ? next()
+        : res.status(403).send({ message: 'Admin role is required' });
 };

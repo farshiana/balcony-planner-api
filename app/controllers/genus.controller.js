@@ -1,4 +1,6 @@
-import { Genus } from '../models/models';
+import db from '../models/models';
+
+const Genus = db;
 
 export const addGenus = async (req, res) => {
     try {
