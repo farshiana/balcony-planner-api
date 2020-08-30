@@ -33,15 +33,14 @@ export const login = async (req, res) => {
             return res.status(401).send({ accessToken: null, message: 'Password is invalid' });
         }
 
-        const roles = (await user.getRoles()).map((role) => role.name);
-        req.session.user = user;
-        req.session.roles = roles;
+        req.session.userId = user.id;
+        const roles = await user.getRoles();
 
         return res.status(200).send({
             id: user.id,
             username: user.username,
             email: user.email,
-            roles,
+            roles: roles.map((role) => role.name),
         });
     } catch (error) {
         return res.status(500).send({ message: error.message });

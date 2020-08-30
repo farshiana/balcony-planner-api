@@ -17,7 +17,21 @@ export const checkDuplicates = async (req, res, next) => {
     return next();
 };
 
-export const checkAuth = (req, res, next) => (req.user ? next() : res.status(401).send({ message: 'Authentication is required' }));
+export const checkAuth = async (req, res, next) => {
+    if (req.session.userId) {
+        const user = await User.findByPk(req.session.userId);
 
-export const checkAdmin = (req, res, next) => (req.session.roles.includes(ROLE_ADMIN) ? next()
-    : res.status(403).send({ message: 'Admin role is required' }));
+        if (user) {
+            res.locals.user = user;
+            return next();
+        }
+    }
+
+    return res.status(401).send({ message: 'Authentication is required' });
+};
+
+export const checkAdmin = async (req, res, next) => {
+    const roles = await res.locals.user.getRoles();
+
+    return roles.includes(ROLE_ADMIN) ? next() : res.status(403).send({ message: 'Admin role is required' });
+};
