@@ -1,6 +1,6 @@
 import { CATEGORIES } from '../constants';
 
-export default (sequelize, Sequelize) => sequelize.define('balconies', {
+export default (sequelize, Sequelize) => sequelize.define('genera', {
     id: {
         type: Sequelize.UUID,
         primaryKey: true,

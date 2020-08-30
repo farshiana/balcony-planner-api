@@ -31,7 +31,10 @@ export default (sequelize, Sequelize) => {
     });
 
     Variety.associate = (models) => {
-        Variety.belongsTo(models.Genus, { foreignKey: 'genusId' });
+        Variety.belongsTo(models.Genus, {
+            foreignKey: 'genusId',
+            as: 'genus',
+        });
     };
 
     return Variety;

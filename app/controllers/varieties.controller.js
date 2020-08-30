@@ -4,9 +4,12 @@ const { Variety } = db;
 
 export const addVariety = async (req, res) => {
     try {
+        debugger;
+
         const variety = await Variety.create({
             name: req.body.name,
-            category: req.body.category,
+            exposure: req.body.exposure,
+            watering: req.body.watering,
         });
         res.status(201).send(variety);
     } catch (error) {
@@ -27,7 +30,8 @@ export const updateVariety = async (req, res) => {
     try {
         const variety = await Variety.findByPk(req.params.varietyId).update({
             name: req.body.name,
-            category: req.body.category,
+            exposure: req.body.exposure,
+            watering: req.body.watering,
         });
         res.status(201).send(variety);
     } catch (error) {
