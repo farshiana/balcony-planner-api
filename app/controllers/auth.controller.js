@@ -1,9 +1,6 @@
 import bcrypt from 'bcryptjs';
 import db from '../models/models';
-import config from '../config/auth.config';
 import { ROLE_USER } from '../constants';
-
-const authConfig = config[process.env.NODE_ENV];
 
 const { User, Role } = db;
 
@@ -36,14 +33,15 @@ export const login = async (req, res) => {
             return res.status(401).send({ accessToken: null, message: 'Password is invalid' });
         }
 
-        const roles = await user.getRoles();
-        req.session.user = user.dataValues;
+        const roles = (await user.getRoles()).map((role) => role.name);
+        req.session.user = user;
+        req.session.roles = roles;
 
         return res.status(200).send({
             id: user.id,
             username: user.username,
             email: user.email,
-            roles: roles.map((role) => role.name),
+            roles,
         });
     } catch (error) {
         return res.status(500).send({ message: error.message });

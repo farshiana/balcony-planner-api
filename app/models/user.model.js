@@ -12,9 +12,11 @@ export default (sequelize, Sequelize) => {
         },
         email: {
             type: Sequelize.STRING,
+            allowNull: false,
         },
         password: {
             type: Sequelize.STRING,
+            allowNull: false,
         },
         createdAt: {
             type: Sequelize.DATE,
@@ -31,6 +33,9 @@ export default (sequelize, Sequelize) => {
             through: 'users_roles',
             foreignKey: 'userId',
             as: 'roles',
+        });
+        User.hasMany(models.Balcony, {
+            foreignKey: 'userId',
         });
     };
 

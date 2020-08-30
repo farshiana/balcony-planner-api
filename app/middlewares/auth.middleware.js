@@ -1,4 +1,5 @@
 import db from '../models/models';
+import { ROLE_ADMIN } from '../constants';
 
 const { User } = db;
 
@@ -15,3 +16,8 @@ export const checkDuplicates = async (req, res, next) => {
 
     return next();
 };
+
+export const checkAuth = (req, res, next) => (req.user ? next() : res.status(401).send({ message: 'Authentication is required' }));
+
+export const checkAdmin = (req, res, next) => (req.session.roles.includes(ROLE_ADMIN) ? next()
+    : res.status(403).send({ message: 'Admin role is required' }));
