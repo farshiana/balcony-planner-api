@@ -1,4 +1,3 @@
-import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import db from '../models/models';
 import config from '../config/auth.config';
@@ -21,7 +20,7 @@ export const register = async (req, res, next) => {
 
         return next();
     } catch (error) {
-       return res.status(500).send({ message: error.message });
+        return res.status(500).send({ message: error.message });
     }
 };
 
@@ -38,8 +37,7 @@ export const login = async (req, res) => {
         }
 
         const roles = await user.getRoles();
-        const token = jwt.sign({ id: user.id }, authConfig.secret, { expiresIn: authConfig.expiresIn });
-        res.cookie('token', token, { httpOnly: true, secure: authConfig.secure });
+        req.session.user = user.dataValues;
 
         return res.status(200).send({
             id: user.id,

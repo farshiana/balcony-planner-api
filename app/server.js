@@ -4,6 +4,7 @@ import cors from 'cors';
 import logger from 'morgan';
 import session from 'express-session';
 import connect from 'connect-session-sequelize';
+import helmet from 'helmet';
 import auth from './routes/auth.routes';
 import db from './models/models';
 import { ROLE_USER, ROLE_ADMIN } from './constants';
@@ -30,6 +31,7 @@ app.use(
         store,
     }),
 );
+app.use(helmet());
 app.use(logger('dev'));
 app.use(cors({ origin: 'http://localhost:8081' }));
 app.use(bodyParser.json());
