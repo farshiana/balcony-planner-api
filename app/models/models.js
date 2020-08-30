@@ -5,8 +5,7 @@ import config from '../config/db.config';
 import { ROLES } from '../constants';
 
 const basename = path.basename(__filename);
-const env = process.env.NODE_ENV || 'development';
-const dbConfig = config[env];
+const dbConfig = config[process.env.NODE_ENV];
 const db = {};
 
 const sequelize = new Sequelize(dbConfig.database, dbConfig.username, dbConfig.password, dbConfig);

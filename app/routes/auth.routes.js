@@ -16,7 +16,7 @@ export default (app) => {
     app.post('/auth/register', [
         validation({ email, username, password }),
         checkDuplicates,
-    ], register);
+    ], register, login);
 
     app.post('/auth/login', [validation({ username, password })], login);
 };

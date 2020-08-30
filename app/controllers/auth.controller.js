@@ -4,9 +4,11 @@ import db from '../models/models';
 import config from '../config/auth.config';
 import { ROLE_USER } from '../constants';
 
+const authConfig = config[process.env.NODE_ENV];
+
 const { User, Role } = db;
 
-export const register = async (req, res) => {
+export const register = async (req, res, next) => {
     try {
         const user = await User.create({
             username: req.body.username.trim().toLowerCase(),
@@ -17,9 +19,9 @@ export const register = async (req, res) => {
         const role = await Role.findOne({ where: { name: ROLE_USER } });
         await user.setRoles(role);
 
-        res.send({ message: 'User was created' });
+        return next();
     } catch (error) {
-        res.status(500).send({ message: error.message });
+       return res.status(500).send({ message: error.message });
     }
 };
 
@@ -36,14 +38,14 @@ export const login = async (req, res) => {
         }
 
         const roles = await user.getRoles();
-        const token = jwt.sign({ id: user.id }, config.secret, { expiresIn: 86400 });
+        const token = jwt.sign({ id: user.id }, authConfig.secret, { expiresIn: authConfig.expiresIn });
+        res.cookie('token', token, { httpOnly: true, secure: authConfig.secure });
 
         return res.status(200).send({
             id: user.id,
             username: user.username,
             email: user.email,
             roles: roles.map((role) => role.name),
-            accessToken: token,
         });
     } catch (error) {
         return res.status(500).send({ message: error.message });

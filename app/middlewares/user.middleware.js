@@ -12,7 +12,7 @@ export const checkToken = (req, res, next) => {
         return res.status(403).send({ message: 'Token is required' });
     }
 
-    jwt.verify(token, config.secret, (error, decoded) => {
+    return jwt.verify(token, config.secret, (error, decoded) => {
         if (error) {
             return res.status(401).send({ message: 'Token is invalid' });
         }
