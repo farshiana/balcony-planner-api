@@ -3,9 +3,8 @@ import { checkDuplicates } from '../middlewares/auth.middleware';
 import { register, login } from '../controllers/auth.controller';
 import validation from '../middlewares/validation.middleware';
 
-const email = Joi.string().lowercase().trim().email()
-    .required();
-const username = Joi.string().lowercase().trim().required();
+const email = Joi.string().email().required();
+const username = Joi.string().required();
 const password = Joi.string().min(12).pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).required();
 
 export default (app) => {
