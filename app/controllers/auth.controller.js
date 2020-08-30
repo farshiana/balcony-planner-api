@@ -9,8 +9,8 @@ const { User, Role } = db;
 export const register = async (req, res) => {
     try {
         const user = await User.create({
-            username: req.body.username,
-            email: req.body.email,
+            username: req.body.username.trim().toLowerCase(),
+            email: req.body.email.trim().toLowerCase(),
             password: bcrypt.hashSync(req.body.password, 8),
         });
 
@@ -25,7 +25,7 @@ export const register = async (req, res) => {
 
 export const login = async (req, res) => {
     try {
-        const user = await User.findOne({ where: { username: req.body.username } });
+        const user = await User.findOne({ where: { username: req.body.username.trim().toLowerCase() } });
         if (!user) {
             return res.status(404).send({ message: 'User was not found' });
         }
