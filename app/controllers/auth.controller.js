@@ -1,6 +1,6 @@
 import bcrypt from 'bcryptjs';
 import db from '../models/models';
-import { ROLE_USER } from '../constants';
+import { ROLE_ADMIN } from '../constants';
 
 const { User, Role } = db;
 
@@ -12,7 +12,8 @@ export const register = async (req, res, next) => {
             password: bcrypt.hashSync(req.body.password, 8),
         });
 
-        const role = await Role.findOne({ where: { name: ROLE_USER } });
+        // TODO: replace by const role = await Role.findOne({ where: { name: ROLE_USER } });
+        const role = await Role.findOne({ where: { name: ROLE_ADMIN } });
         await user.setRoles(role);
 
         return next();
