@@ -9,6 +9,7 @@ import auth from './routes/auth.routes';
 import balconies from './routes/balconies.routes';
 import genera from './routes/genera.routes';
 import varieties from './routes/varieties.routes';
+import planters from './routes/planters.routes';
 import db from './models/models';
 import { ROLE_USER, ROLE_ADMIN } from './constants';
 import config from './config/auth.config';
@@ -50,5 +51,6 @@ auth(app);
 balconies(app);
 genera(app);
 varieties(app);
+planters(app);
 
 app.listen(PORT, () => { console.log(`Server is running on port ${PORT}.`); });

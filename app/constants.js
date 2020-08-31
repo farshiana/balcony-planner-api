@@ -28,3 +28,41 @@ export const WATERINGS = [
     WATERING_MEDIUM,
     WATERING_HIGH,
 ];
+
+// SHAPES
+export const SHAPE_CIRCLE = 'circle';
+export const SHAPE_SQUARE = 'square';
+export const SHAPE_RECTANGLE = 'rectangle';
+export const SHAPES = [
+    SHAPE_CIRCLE,
+    SHAPE_SQUARE,
+    SHAPE_RECTANGLE,
+];
+
+// SHAPES
+export const COLOR_RED = 'red';
+export const COLOR_PINK = 'pink';
+export const COLOR_PURPLE = 'purple';
+export const COLOR_INDIGO = 'indigo';
+export const COLOR_BLUE = 'blue';
+export const COLOR_CYAN = 'cyan';
+export const COLOR_TEAL = 'teal';
+export const COLOR_GREEN = 'green';
+export const COLOR_YELLOW = 'yellow';
+export const COLOR_ORANGE = 'orange';
+export const COLOR_BROWN = 'brown';
+export const COLOR_GREY = 'grey';
+export const COLORS = [
+    COLOR_RED,
+    COLOR_PINK,
+    COLOR_PURPLE,
+    COLOR_INDIGO,
+    COLOR_BLUE,
+    COLOR_CYAN,
+    COLOR_TEAL,
+    COLOR_GREEN,
+    COLOR_YELLOW,
+    COLOR_ORANGE,
+    COLOR_BROWN,
+    COLOR_GREY,
+];
