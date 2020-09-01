@@ -9,8 +9,8 @@ const exposure = body('exposure').isIn(EXPOSURES);
 const watering = body('watering').isIn(WATERINGS);
 const steps = body('steps').isLength({ min: 1 });
 const stepsType = body('steps.*.type').isIn(STEPS);
-const stepsStartDate = body('steps.*.startDate').isISO8601();
-const stepsEndDate = body('steps.*.endDate').isISO8601();
+const stepsStartDate = body('steps.*.startDate').isDate({ format: 'yyyy-mm-dd' });
+const stepsEndDate = body('steps.*.endDate').isDate({ format: 'yyyy-mm-dd' });
 
 export default (app) => {
     app.post('/genera/:genusId/varieties', checkAuth, checkAdmin,

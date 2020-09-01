@@ -1,6 +1,6 @@
 import db from '../models/models';
 
-const { Variety, Genus, Step } = db;
+const { Variety, Genus } = db;
 
 export const addVariety = async (req, res) => {
     try {
@@ -13,12 +13,8 @@ export const addVariety = async (req, res) => {
             name: req.body.name,
             exposure: req.body.exposure,
             watering: req.body.watering,
-            steps: req.body.steps.map((step) => ({
-                type: step.type,
-                startDate: step.startDate,
-                endDate: step.endDate,
-            })),
-        }, { include: [{ model: Step, as: 'steps' }] });
+            steps: req.body.steps,
+        });
         return res.status(201).send(variety);
     } catch (error) {
         return res.status(500).send({ message: error.message });
@@ -27,7 +23,7 @@ export const addVariety = async (req, res) => {
 
 export const getAllVarieties = async (req, res) => {
     try {
-        const genera = await Variety.findAll({ include: { model: Step, as: 'steps' } });
+        const genera = await Variety.findAll();
         res.status(201).send(genera);
     } catch (error) {
         res.status(500).send({ message: error.message });

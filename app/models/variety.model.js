@@ -20,6 +20,10 @@ export default (sequelize, Sequelize) => {
             type: Sequelize.ENUM({ values: WATERINGS }),
             allowNull: false,
         },
+        steps: {
+            type: Sequelize.JSON,
+            allowNull: false,
+        },
         createdAt: {
             type: Sequelize.DATE,
             allowNull: false,
@@ -34,10 +38,6 @@ export default (sequelize, Sequelize) => {
         Variety.belongsTo(models.Genus, {
             foreignKey: 'genusId',
             as: 'genus',
-        });
-        Variety.hasMany(models.Step, {
-            foreignKey: 'varietyId',
-            as: 'steps',
         });
     };
 
