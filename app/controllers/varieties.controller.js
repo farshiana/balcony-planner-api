@@ -1,6 +1,6 @@
 import db from '../models/models';
 
-const { Variety, Genus } = db;
+const { Variety, Genus, Step } = db;
 
 export const addVariety = async (req, res) => {
     try {
@@ -13,7 +13,12 @@ export const addVariety = async (req, res) => {
             name: req.body.name,
             exposure: req.body.exposure,
             watering: req.body.watering,
-        });
+            steps: req.body.steps.map((step) => ({
+                type: step.type,
+                startDate: step.startDate,
+                endDate: step.endDate,
+            })),
+        }, { include: [{ model: Step, as: 'steps' }] });
         return res.status(201).send(variety);
     } catch (error) {
         return res.status(500).send({ message: error.message });
