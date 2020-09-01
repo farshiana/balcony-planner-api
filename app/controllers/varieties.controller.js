@@ -27,7 +27,7 @@ export const addVariety = async (req, res) => {
 
 export const getAllVarieties = async (req, res) => {
     try {
-        const genera = await Variety.findAll();
+        const genera = await Variety.findAll({ include: { model: Step, as: 'steps' } });
         res.status(201).send(genera);
     } catch (error) {
         res.status(500).send({ message: error.message });
