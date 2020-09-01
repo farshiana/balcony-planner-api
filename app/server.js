@@ -6,6 +6,7 @@ import session from 'express-session';
 import connect from 'connect-session-sequelize';
 import helmet from 'helmet';
 import auth from './routes/auth.routes';
+import user from './routes/user.routes';
 import balconies from './routes/balconies.routes';
 import genera from './routes/genera.routes';
 import varieties from './routes/varieties.routes';
@@ -48,6 +49,7 @@ db.sequelize.sync({ force: true }).then(() => {
 });
 
 auth(app);
+user(app);
 balconies(app);
 genera(app);
 varieties(app);
