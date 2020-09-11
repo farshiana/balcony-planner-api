@@ -38,7 +38,7 @@ app.use(
 );
 app.use(helmet());
 app.use(logger('dev'));
-app.use(cors({ origin: 'http://localhost:8081' }));
+app.use(cors({ credentials: true, origin: 'http://localhost:8081' }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 

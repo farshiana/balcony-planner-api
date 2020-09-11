@@ -2,15 +2,17 @@ export default {
     development: {
         secret: 'secret',
         cookie: {
-            expires: 60000,
+            maxAge: 60000,
             secure: false,
+            httpOnly: true,
         },
     },
     production: {
         secret: 'secret',
         cookie: {
-            expires: 60000,
+            maxAge: 60000,
             secure: true,
+            httpOnly: true,
         },
     },
 };
