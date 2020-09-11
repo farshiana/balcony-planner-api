@@ -13,5 +13,5 @@ export default (app) => {
         checkDuplicates,
         register,
         login);
-    app.put('/auth/login', validator(username, password), login);
+    app.put('/auth/login', validator(email, password), login);
 };
