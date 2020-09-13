@@ -43,7 +43,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 store.sync();
-db.sequelize.sync({ force: true }).then(() => {
+db.sequelize.sync().then(() => {
     db.Role.create({ name: ROLE_USER });
     db.Role.create({ name: ROLE_ADMIN });
 });

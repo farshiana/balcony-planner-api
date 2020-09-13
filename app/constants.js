@@ -39,7 +39,7 @@ export const SHAPES = [
     SHAPE_RECTANGLE,
 ];
 
-// SHAPES
+// COLORS
 export const COLOR_RED = 'red';
 export const COLOR_PINK = 'pink';
 export const COLOR_PURPLE = 'purple';
