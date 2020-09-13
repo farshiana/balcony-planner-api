@@ -66,13 +66,3 @@ export const COLORS = [
     COLOR_BROWN,
     COLOR_GREY,
 ];
-
-// STEPS
-export const STEP_SEED = 'seed';
-export const STEP_PLANT = 'plant';
-export const STEP_HARVEST = 'harvest';
-export const STEPS = [
-    STEP_SEED,
-    STEP_PLANT,
-    STEP_HARVEST,
-];

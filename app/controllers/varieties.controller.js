@@ -13,7 +13,9 @@ export const addVariety = async (req, res) => {
             name: req.body.name,
             exposure: req.body.exposure,
             watering: req.body.watering,
-            steps: req.body.steps,
+            seed: req.body.seed,
+            plant: req.body.plant,
+            harvest: req.body.harvest,
         });
         return res.status(201).send(variety);
     } catch (error) {

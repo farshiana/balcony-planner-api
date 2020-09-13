@@ -2,20 +2,20 @@ import { body } from 'express-validator';
 import { addVariety, getAllVarieties, updateVariety } from '../controllers/varieties.controller';
 import validator from '../middlewares/validator.middleware';
 import { checkAuth, checkAdmin } from '../middlewares/auth.middleware';
-import { EXPOSURES, WATERINGS, STEPS } from '../constants';
+import { EXPOSURES, WATERINGS } from '../constants';
 
 const name = body('name').trim().escape().notEmpty();
 const exposure = body('exposure').isIn(EXPOSURES);
 const watering = body('watering').isIn(WATERINGS);
-const steps = body('steps').isLength({ min: 1 });
-const stepsType = body('steps.*.type').isIn(STEPS);
-const stepsStartDate = body('steps.*.startDate').isDate({ format: 'yyyy-mm-dd' });
-const stepsEndDate = body('steps.*.endDate').isDate({ format: 'yyyy-mm-dd' });
+const seed = body('seed').isLength({ min: 1 });
+const plant = body('plant').isLength({ min: 1 });
+const harvest = body('harvest').isLength({ min: 1 });
+// TODO: validate array of numbers between 0 & 11
 
 export default (app) => {
     app.post('/genera/:genusId/varieties', checkAuth, checkAdmin,
-        validator(name, exposure, watering, steps, stepsType, stepsStartDate, stepsEndDate), addVariety);
+        validator(name, exposure, watering, seed, plant, harvest), addVariety);
     app.put('/varieties/:varietyId', checkAuth, checkAdmin,
-        validator(name, exposure, watering, steps, stepsType, stepsStartDate, stepsEndDate), updateVariety);
+        validator(name, exposure, watering, seed, plant, harvest), updateVariety);
     app.get('/varieties', checkAuth, getAllVarieties);
 };

@@ -20,7 +20,15 @@ export default (sequelize, Sequelize) => {
             type: Sequelize.ENUM({ values: WATERINGS }),
             allowNull: false,
         },
-        steps: {
+        seed: {
+            type: Sequelize.JSON,
+            allowNull: false,
+        },
+        plant: {
+            type: Sequelize.JSON,
+            allowNull: false,
+        },
+        harvest: {
             type: Sequelize.JSON,
             allowNull: false,
         },
