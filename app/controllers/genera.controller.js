@@ -17,7 +17,7 @@ export const addGenus = async (req, res) => {
 export const getAllGenera = async (req, res) => {
     try {
         const genera = await Genus.findAll();
-        res.status(201).send(genera);
+        res.status(200).send(genera);
     } catch (error) {
         res.status(500).send({ message: error.message });
     }
@@ -29,7 +29,7 @@ export const updateGenus = async (req, res) => {
             name: req.body.name,
             category: req.body.category,
         });
-        res.status(201).send(genus);
+        res.status(200).send(genus);
     } catch (error) {
         res.status(500).send({ message: error.message });
     }

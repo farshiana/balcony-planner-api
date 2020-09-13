@@ -25,7 +25,7 @@ export const addPlanter = async (req, res) => {
 export const getAllPlanters = async (req, res) => {
     try {
         const planters = await Planter.findAll();
-        res.status(201).send(planters);
+        res.status(200).send(planters);
     } catch (error) {
         res.status(500).send({ message: error.message });
     }
@@ -40,7 +40,7 @@ export const updatePlanter = async (req, res) => {
             color: req.body.color,
             exposure: req.body.exposure,
         });
-        res.status(201).send(planter);
+        res.status(200).send(planter);
     } catch (error) {
         res.status(500).send({ message: error.message });
     }
