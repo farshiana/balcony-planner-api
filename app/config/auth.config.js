@@ -2,7 +2,7 @@ export default {
     development: {
         secret: 'secret',
         cookie: {
-            maxAge: 60000,
+            maxAge: 60000 * 60 * 24 * 7,
             secure: false,
             httpOnly: true,
         },
@@ -10,7 +10,7 @@ export default {
     production: {
         secret: 'secret',
         cookie: {
-            maxAge: 60000,
+            maxAge: 60000 * 60 * 24 * 7,
             secure: true,
             httpOnly: true,
         },
