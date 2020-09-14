@@ -8,7 +8,7 @@ export const addGenus = async (req, res) => {
             name: req.body.name,
             category: req.body.category,
         });
-        res.status(201).send(genus);
+        res.status(200).send(genus);
     } catch (error) {
         res.status(500).send({ message: error.message });
     }

@@ -5,7 +5,7 @@ export const addBalcony = async (req, res) => {
             width: req.body.width,
             height: req.body.height,
         });
-        res.status(201).send(balcony);
+        res.status(200).send(balcony);
     } catch (error) {
         res.status(500).send({ message: error.message });
     }

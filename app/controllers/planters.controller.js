@@ -16,7 +16,7 @@ export const addPlanter = async (req, res) => {
             color: req.body.color,
             exposure: req.body.exposure,
         });
-        return res.status(201).send(planter);
+        return res.status(200).send(planter);
     } catch (error) {
         return res.status(500).send({ message: error.message });
     }
