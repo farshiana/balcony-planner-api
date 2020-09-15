@@ -10,12 +10,13 @@ const watering = body('watering').isIn(WATERINGS);
 const seed = body('seed').isLength({ min: 1 });
 const plant = body('plant').isLength({ min: 1 });
 const harvest = body('harvest').isLength({ min: 1 });
+const genusId = body('genusId').isUUID();
 // TODO: validate array of numbers between 0 & 11
 
 export default (app) => {
-    app.post('/genera/:genusId/varieties', checkAuth, checkAdmin,
-        validator(name, exposure, watering, seed, plant, harvest), addVariety);
+    app.post('/varieties', checkAuth, checkAdmin,
+        validator(name, exposure, watering, seed, plant, harvest, genusId), addVariety);
     app.put('/varieties/:varietyId', checkAuth, checkAdmin,
-        validator(name, exposure, watering, seed, plant, harvest), updateVariety);
+        validator(name, exposure, watering, seed, plant, harvest, genusId), updateVariety);
     app.get('/varieties', checkAuth, getAllVarieties);
 };

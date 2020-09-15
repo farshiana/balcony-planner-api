@@ -1,3 +1,7 @@
+import db from '../models/models';
+
+const { Balcony } = db;
+
 export const addBalcony = async (req, res) => {
     try {
         const balcony = await res.locals.user.createBalcony({
@@ -22,13 +26,18 @@ export const getAllBalconies = async (req, res) => {
 
 export const updateBalcony = async (req, res) => {
     try {
-        const balcony = await res.locals.user.createBalcony({
+        const balcony = await Balcony.findByPk(req.params.balconyId);
+        if (!balcony) {
+            return res.status(404).send({ message: 'Balcony was not found' });
+        }
+
+        await balcony.update({
             name: req.body.name,
             width: req.body.width,
             height: req.body.height,
         });
-        res.status(200).send(balcony);
+        return res.status(200).send(balcony);
     } catch (error) {
-        res.status(500).send({ message: error.message });
+        return res.status(500).send({ message: error.message });
     }
 };

@@ -25,12 +25,17 @@ export const getAllGenera = async (req, res) => {
 
 export const updateGenus = async (req, res) => {
     try {
-        const genus = await Genus.findByPk(req.params.genusId).update({
+        const genus = await Genus.findByPk(req.params.genusId);
+        if (!genus) {
+            return res.status(404).send({ message: 'Genus was not found' });
+        }
+
+        await genus.update({
             name: req.body.name,
             category: req.body.category,
         });
-        res.status(200).send(genus);
+        return res.status(200).send(genus);
     } catch (error) {
-        res.status(500).send({ message: error.message });
+        return res.status(500).send({ message: error.message });
     }
 };

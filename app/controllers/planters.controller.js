@@ -4,7 +4,7 @@ const { Planter, Balcony } = db;
 
 export const addPlanter = async (req, res) => {
     try {
-        const balcony = await Balcony.findByPk(req.params.balconyId);
+        const balcony = await Balcony.findByPk(req.body.balconyId);
         if (!balcony) {
             return res.status(404).send({ message: 'Balcony was not found' });
         }
@@ -33,15 +33,26 @@ export const getAllPlanters = async (req, res) => {
 
 export const updatePlanter = async (req, res) => {
     try {
-        const planter = await Planter.findByPk(req.params.planterId).update({
+        const planter = await Planter.findByPk(req.params.planterId);
+        if (!planter) {
+            return res.status(404).send({ message: 'Planter was not found' });
+        }
+
+        const balcony = await Balcony.findByPk(req.body.balconyId);
+        if (!balcony) {
+            return res.status(404).send({ message: 'Balcony was not found' });
+        }
+
+        planter.update({
             name: req.body.name,
             shape: req.body.shape,
             dimensions: req.body.dimensions,
             color: req.body.color,
             exposure: req.body.exposure,
+            balconyId: req.body.balconyId,
         });
-        res.status(200).send(planter);
+        return res.status(200).send(planter);
     } catch (error) {
-        res.status(500).send({ message: error.message });
+        return res.status(500).send({ message: error.message });
     }
 };

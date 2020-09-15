@@ -9,11 +9,12 @@ const shape = body('shape').isIn(SHAPES);
 const dimensions = body('dimensions').isJSON();
 const color = body('color').isIn(COLORS);
 const exposure = body('exposure').isIn(EXPOSURES);
+const balconyId = body('balconyId').isUUID();
 
 export default (app) => {
-    app.post('/balconies/:balconyId/planters', checkAuth,
-        validator(name, shape, dimensions, color, exposure), addPlanter);
+    app.post('/planters', checkAuth,
+        validator(name, shape, dimensions, color, exposure, balconyId), addPlanter);
     app.put('/planters/:planterId', checkAuth,
-        validator(name, shape, dimensions, color, exposure), updatePlanter);
+        validator(name, shape, dimensions, color, exposure, balconyId), updatePlanter);
     app.get('/planters', checkAuth, getAllPlanters);
 };

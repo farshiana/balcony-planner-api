@@ -22,7 +22,7 @@ export const addPlant = async (req, res) => {
 
 export const getAllPlants = async (req, res) => {
     try {
-        const plants = await Plant.find({ where: { userId: res.locals.user.id } });
+        const plants = await Plant.findAll({ where: { userId: res.locals.user.id } });
         res.status(200).send(plants);
     } catch (error) {
         res.status(500).send({ message: error.message });
@@ -31,11 +31,22 @@ export const getAllPlants = async (req, res) => {
 
 export const updatePlant = async (req, res) => {
     try {
-        const plant = await res.locals.user.updatePlant({
+        const plant = await Plant.findByPk(req.params.plantId);
+        if (!plant) {
+            return res.status(404).send({ message: 'Plant was not found' });
+        }
+
+        const variety = await Variety.findByPk(req.body.varietyId);
+        if (!variety) {
+            return res.status(404).send({ message: 'Variety was not found' });
+        }
+
+        await plant.update({
+            varietyId: req.body.varietyId,
             notes: req.body.notes,
         });
-        res.status(200).send(plant);
+        return res.status(200).send(plant);
     } catch (error) {
-        res.status(500).send({ message: error.message });
+        return res.status(500).send({ message: error.message });
     }
 };
