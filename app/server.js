@@ -11,6 +11,7 @@ import balconies from './routes/balconies.routes';
 import genera from './routes/genera.routes';
 import varieties from './routes/varieties.routes';
 import planters from './routes/planters.routes';
+import plants from './routes/plants.routes';
 import db from './models/models';
 import { ROLE_USER, ROLE_ADMIN } from './constants';
 import config from './config/auth.config';
@@ -43,7 +44,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 store.sync();
-db.sequelize.sync().then(() => {
+db.sequelize.sync({ force: true }).then(() => {
     db.Role.create({ name: ROLE_USER });
     db.Role.create({ name: ROLE_ADMIN });
 });
@@ -54,5 +55,6 @@ balconies(app);
 genera(app);
 varieties(app);
 planters(app);
+plants(app);
 
 app.listen(PORT, () => { console.log(`Server is running on port ${PORT}.`); });
