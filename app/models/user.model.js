@@ -37,6 +37,10 @@ export default (sequelize, Sequelize) => {
         User.hasMany(models.Balcony, {
             foreignKey: 'userId',
         });
+        User.hasMany(models.Planting, {
+            foreignKey: 'userId',
+            as: 'plantings',
+        });
     };
 
     return User;

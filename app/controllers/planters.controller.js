@@ -38,18 +38,12 @@ export const updatePlanter = async (req, res) => {
             return res.status(404).send({ message: 'Planter was not found' });
         }
 
-        const balcony = await Balcony.findByPk(req.body.balconyId);
-        if (!balcony) {
-            return res.status(404).send({ message: 'Balcony was not found' });
-        }
-
         planter.update({
             name: req.body.name,
             shape: req.body.shape,
             dimensions: req.body.dimensions,
             color: req.body.color,
             exposure: req.body.exposure,
-            balconyId: req.body.balconyId,
         });
         return res.status(200).send(planter);
     } catch (error) {

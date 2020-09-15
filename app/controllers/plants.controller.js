@@ -36,15 +36,7 @@ export const updatePlant = async (req, res) => {
             return res.status(404).send({ message: 'Plant was not found' });
         }
 
-        const variety = await Variety.findByPk(req.body.varietyId);
-        if (!variety) {
-            return res.status(404).send({ message: 'Variety was not found' });
-        }
-
-        await plant.update({
-            varietyId: req.body.varietyId,
-            notes: req.body.notes,
-        });
+        await plant.update({ notes: req.body.notes });
         return res.status(200).send(plant);
     } catch (error) {
         return res.status(500).send({ message: error.message });

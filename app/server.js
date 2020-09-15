@@ -12,6 +12,7 @@ import genera from './routes/genera.routes';
 import varieties from './routes/varieties.routes';
 import planters from './routes/planters.routes';
 import plants from './routes/plants.routes';
+import plantings from './routes/plantings.routes';
 import db from './models/models';
 import { ROLE_USER, ROLE_ADMIN } from './constants';
 import config from './config/auth.config';
@@ -56,5 +57,6 @@ genera(app);
 varieties(app);
 planters(app);
 plants(app);
+plantings(app);
 
 app.listen(PORT, () => { console.log(`Server is running on port ${PORT}.`); });

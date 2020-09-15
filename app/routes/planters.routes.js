@@ -15,6 +15,6 @@ export default (app) => {
     app.post('/planters', checkAuth,
         validator(name, shape, dimensions, color, exposure, balconyId), addPlanter);
     app.put('/planters/:planterId', checkAuth,
-        validator(name, shape, dimensions, color, exposure, balconyId), updatePlanter);
+        validator(name, shape, dimensions, color, exposure), updatePlanter);
     app.get('/planters', checkAuth, getAllPlanters);
 };
