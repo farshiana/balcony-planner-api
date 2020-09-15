@@ -37,11 +37,6 @@ export default (sequelize, Sequelize) => {
         User.hasMany(models.Balcony, {
             foreignKey: 'userId',
         });
-        User.belongsToMany(models.Variety, {
-            through: 'plants',
-            foreignKey: 'userId',
-            as: 'varieties',
-        });
     };
 
     return User;

@@ -47,11 +47,6 @@ export default (sequelize, Sequelize) => {
             foreignKey: 'genusId',
             as: 'genus',
         });
-        Variety.belongsToMany(models.User, {
-            through: 'plants',
-            foreignKey: 'varietyId',
-            as: 'users',
-        });
     };
 
     return Variety;
