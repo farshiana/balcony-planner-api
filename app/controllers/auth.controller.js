@@ -14,8 +14,6 @@ export const register = async (req, res, next) => {
         });
         await user.createBalcony({ width: 500, height: 500 });
 
-        // req.session.userId = user.id;
-
         return next();
     } catch (error) {
         return res.status(500).send({ message: error.message });
