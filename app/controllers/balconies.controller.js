@@ -31,6 +31,10 @@ export const updateBalcony = async (req, res) => {
             return res.status(404).send({ message: 'Balcony was not found' });
         }
 
+        if (!res.locals.user.hasBalcony(balcony)) {
+            return res.status(401).send({ message: 'You don\t have access to this balcony' });
+        }
+
         await balcony.update({
             name: req.body.name,
             width: req.body.width,
