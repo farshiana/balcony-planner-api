@@ -14,7 +14,6 @@ import planters from './routes/planters.routes';
 import plants from './routes/plants.routes';
 import plantings from './routes/plantings.routes';
 import db from './models/models';
-import { ROLE_USER, ROLE_ADMIN } from './constants';
 import config from './config/auth.config';
 
 const authConfig = config[process.env.NODE_ENV];
@@ -45,10 +44,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 store.sync();
-db.sequelize.sync({ force: true }).then(() => {
-    db.Role.create({ name: ROLE_USER });
-    db.Role.create({ name: ROLE_ADMIN });
-});
+db.sequelize.sync({ force: true });
 
 auth(app);
 user(app);

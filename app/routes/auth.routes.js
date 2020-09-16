@@ -8,10 +8,6 @@ const username = body('username').trim().escape().notEmpty();
 const password = body('password').isLength({ min: 12 });
 
 export default (app) => {
-    app.post('/auth/register',
-        validator(email, username, password),
-        checkDuplicates,
-        register,
-        login);
+    app.post('/auth/register', validator(email, username, password), checkDuplicates, register, login);
     app.put('/auth/login', validator(email, password), login);
 };

@@ -4,7 +4,7 @@ const { Variety, Genus } = db;
 
 export const addVariety = async (req, res) => {
     try {
-        const genus = await Genus.findByPk(req.body.genusId);
+        const genus = await Genus.findByPk(req.params.genusId);
         if (!genus) {
             return res.status(404).send({ message: 'Genus was not found' });
         }
@@ -25,10 +25,15 @@ export const addVariety = async (req, res) => {
 
 export const getAllVarieties = async (req, res) => {
     try {
-        const genera = await Variety.findAll();
-        res.status(200).send(genera);
+        const genus = await Genus.findByPk(req.params.genusId);
+        if (!genus) {
+            return res.status(404).send({ message: 'Genus was not found' });
+        }
+
+        const varieties = await genus.getVarieties();
+        return res.status(200).send(varieties);
     } catch (error) {
-        res.status(500).send({ message: error.message });
+        return res.status(500).send({ message: error.message });
     }
 };
 
@@ -37,11 +42,6 @@ export const updateVariety = async (req, res) => {
         const variety = await Variety.findByPk(req.params.varietyId);
         if (!variety) {
             return res.status(404).send({ message: 'Variety was not found' });
-        }
-
-        const genus = await Genus.findByPk(req.body.genusId);
-        if (!genus) {
-            return res.status(404).send({ message: 'Genus was not found' });
         }
 
         await variety.update({

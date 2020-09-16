@@ -14,9 +14,9 @@ const genusId = body('genusId').isUUID();
 // TODO: validate array of numbers between 0 & 11
 
 export default (app) => {
-    app.post('/varieties', checkAuth, checkAdmin,
+    app.post('/genera/:genusId/varieties', checkAuth, checkAdmin,
         validator(name, exposure, watering, seed, plant, harvest, genusId), addVariety);
-    app.put('/varieties/:varietyId', checkAuth, checkAdmin,
+    app.put('/genera/:genusId/varieties/:varietyId', checkAuth, checkAdmin,
         validator(name, exposure, watering, seed, plant, harvest, genusId), updateVariety);
-    app.get('/varieties', checkAuth, getAllVarieties);
+    app.get('/genera/:genusId/varieties', checkAuth, getAllVarieties);
 };

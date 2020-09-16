@@ -12,9 +12,9 @@ const exposure = body('exposure').isIn(EXPOSURES);
 const balconyId = body('balconyId').isUUID();
 
 export default (app) => {
-    app.post('/planters', checkAuth,
+    app.post('/users/:userId/planters', checkAuth,
         validator(name, shape, dimensions, color, exposure, balconyId), addPlanter);
-    app.put('/planters/:planterId', checkAuth,
+    app.put('/users/:userId/planters/:planterId', checkAuth,
         validator(name, shape, dimensions, color, exposure), updatePlanter);
-    app.get('/planters', checkAuth, getAllPlanters);
+    app.get('/users/:userId/planters', checkAuth, getAllPlanters);
 };

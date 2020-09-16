@@ -1,3 +1,5 @@
+import { ROLES } from '../constants';
+
 export default (sequelize, Sequelize) => {
     const User = sequelize.define('users', {
         id: {
@@ -18,6 +20,10 @@ export default (sequelize, Sequelize) => {
             type: Sequelize.STRING,
             allowNull: false,
         },
+        role: {
+            type: Sequelize.ENUM({ values: ROLES }),
+            allowNull: false,
+        },
         createdAt: {
             type: Sequelize.DATE,
             allowNull: false,
@@ -29,18 +35,9 @@ export default (sequelize, Sequelize) => {
     });
 
     User.associate = (models) => {
-        User.belongsToMany(models.Role, {
-            through: 'users_roles',
-            foreignKey: 'userId',
-            as: 'roles',
-        });
-        User.hasMany(models.Balcony, {
-            foreignKey: 'userId',
-        });
-        User.hasMany(models.Planting, {
-            foreignKey: 'userId',
-            as: 'plantings',
-        });
+        User.hasOne(models.Balcony, { foreignKey: 'balconyId', as: 'balcony' });
+        User.hasMany(models.Planter, { foreignKey: 'userId', as: 'planters' });
+        User.hasMany(models.Planting, { foreignKey: 'userId', as: 'plantings' });
     };
 
     return User;
