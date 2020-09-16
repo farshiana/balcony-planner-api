@@ -24,7 +24,7 @@ export const login = async (req, res) => {
     try {
         const user = await User.findOne({
             where: { email: req.body.email },
-            include: [{ model: Balcony, as: 'balcony', attributes: ['id', 'width', 'height'] }],
+            include: [{ model: Balcony, as: 'balcony' }],
         });
 
         if (!user) {

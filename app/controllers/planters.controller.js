@@ -1,6 +1,6 @@
 import db from '../models/models';
 
-const { Planter } = db;
+const { Planter, Planting } = db;
 
 export const addPlanter = async (req, res) => {
     try {
@@ -19,7 +19,7 @@ export const addPlanter = async (req, res) => {
 
 export const getAllPlanters = async (req, res) => {
     try {
-        const planters = await res.locals.user.getPlanters();
+        const planters = await res.locals.user.getPlanters({ include: [{ model: Planting, as: 'plantings' }] });
         res.status(200).send(planters);
     } catch (error) {
         res.status(500).send({ message: error.message });

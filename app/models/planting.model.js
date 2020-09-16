@@ -30,18 +30,12 @@ export default (sequelize, Sequelize) => {
 
     Planting.associate = (models) => {
         Planting.belongsTo(models.Planter, {
-            through: 'plants',
             foreignKey: 'planterId',
             as: 'planter',
         });
         Planting.belongsTo(models.Variety, {
-            through: 'plants',
             foreignKey: 'varietyId',
             as: 'variety',
-        });
-        Planting.belongsTo(models.User, {
-            foreignKey: 'userId',
-            as: 'user',
         });
     };
 
