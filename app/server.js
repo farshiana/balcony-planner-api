@@ -44,7 +44,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 store.sync();
-db.sequelize.sync({ force: true });
+db.sequelize.sync({ force: process.env.NODE_ENV === 'development' });
 
 auth(app);
 user(app);
@@ -56,3 +56,5 @@ plants(app);
 plantings(app);
 
 app.listen(PORT, () => { console.log(`Server is running on port ${PORT}.`); });
+
+export default app;

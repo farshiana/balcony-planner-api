@@ -2,6 +2,7 @@ module.exports = {
     root: true,
     env: {
         node: true,
+        'jest/globals': true,
     },
     extends: [
         'airbnb-base',
@@ -16,4 +17,5 @@ module.exports = {
         'linebreak-style': ['error', 'windows'],
         indent: ['error', 4],
     },
+    plugins: ['jest'],
 };

@@ -21,4 +21,8 @@ export default (sequelize, Sequelize) => sequelize.define('balconies', {
         type: Sequelize.DATE,
         allowNull: false,
     },
+}, {
+    defaultScope: {
+        attributes: { exclude: ['createdAt', 'updatedAt'] },
+    },
 });
