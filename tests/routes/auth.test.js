@@ -5,17 +5,18 @@ import { ROLE_ADMIN } from '@/constants';
 import db from '@/models/models';
 
 const { User } = db;
+const route = '/auth';
 
-describe('/auth', () => {
+describe(route, () => {
     const params = {
         email: faker.internet.email(),
         username: faker.name.firstName(),
         password: faker.internet.password(),
     };
 
-    describe('/register', () => {
+    describe('register', () => {
         it('creates user with balcony', async () => {
-            const res = await request(app).post('/auth/register').send(params);
+            const res = await request(app).post(`${route}/register`).send(params);
             expect(res.statusCode).toEqual(200);
 
             const user = await User.findByPk(res.body.id);
@@ -31,14 +32,14 @@ describe('/auth', () => {
         });
 
         it('does not register user with existing username', async () => {
-            const res = await request(app).post('/auth/register').send(params);
+            const res = await request(app).post(`${route}/register`).send(params);
 
             expect(res.statusCode).toEqual(400);
             expect(res.body.message).toEqual('Username already exists');
         });
 
         it('does not register user with existing email', async () => {
-            const res = await request(app).post('/auth/register').send({
+            const res = await request(app).post(`${route}/register`).send({
                 ...params,
                 username: faker.name.firstName(),
             });
@@ -48,7 +49,7 @@ describe('/auth', () => {
         });
 
         it('does not register user with short password', async () => {
-            const res = await request(app).post('/auth/register').send({
+            const res = await request(app).post(`${route}/register`).send({
                 email: faker.internet.email(),
                 username: faker.name.firstName(),
                 password: 'short',
@@ -59,9 +60,9 @@ describe('/auth', () => {
         });
     });
 
-    describe('/login', () => {
+    describe('login', () => {
         it('logs user in and sets cookie', async () => {
-            const res = await request(app).put('/auth/login').send(params);
+            const res = await request(app).put(`${route}/login`).send(params);
             expect(res.statusCode).toEqual(200);
 
             const cookie = res.headers['set-cookie'];
@@ -70,7 +71,7 @@ describe('/auth', () => {
         });
 
         it('does not log user in with invalid password', async () => {
-            const res = await request(app).put('/auth/login').send({
+            const res = await request(app).put(`${route}/login`).send({
                 ...params,
                 password: 'invalidPassword',
             });

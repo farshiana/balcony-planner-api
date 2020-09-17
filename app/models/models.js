@@ -7,7 +7,10 @@ const basename = path.basename(__filename);
 const dbConfig = config[process.env.NODE_ENV];
 const db = {};
 
-const sequelize = new Sequelize(dbConfig.database, dbConfig.username, dbConfig.password, dbConfig);
+const sequelize = new Sequelize(dbConfig.database, dbConfig.username, dbConfig.password, {
+    ...dbConfig,
+    define: { defaultScope: { attributes: { exclude: ['createdAt', 'updatedAt'] } } },
+});
 
 const toCamel = (s) => s.replace(/([-_][a-z])/ig, ($1) => $1.toUpperCase().replace('-', '').replace('_', ''));
 

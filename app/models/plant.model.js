@@ -18,10 +18,6 @@ export default (sequelize, Sequelize) => {
             type: Sequelize.DATE,
             allowNull: false,
         },
-    }, {
-        defaultScope: {
-            attributes: { exclude: ['createdAt', 'updatedAt'] },
-        },
     });
 
     Plant.associate = (models) => {
