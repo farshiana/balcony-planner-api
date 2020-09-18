@@ -9,7 +9,7 @@ const route = '/auth';
 
 describe(route, () => {
     const params = {
-        email: faker.internet.email(),
+        email: faker.internet.exampleEmail(),
         username: faker.name.firstName(),
         password: faker.internet.password(),
     };
@@ -29,6 +29,7 @@ describe(route, () => {
                 id: user.id,
                 balcony: balcony.dataValues,
             });
+            expect(res.body).toMatchObject(user);
         });
 
         it('does not register user with existing username', async () => {
@@ -50,7 +51,7 @@ describe(route, () => {
 
         it('does not register user with short password', async () => {
             const res = await request(app).post(`${route}/register`).send({
-                email: faker.internet.email(),
+                email: faker.internet.exampleEmail(),
                 username: faker.name.firstName(),
                 password: 'short',
             });
