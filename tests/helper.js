@@ -9,5 +9,5 @@ export const getCookie = async () => {
         password: faker.internet.password(),
     });
     expect(res.statusCode).toEqual(200);
-    return res.headers['set-cookie'].pop().split(";")[0];
+    return res.headers['set-cookie'].pop().split(';')[0];
 };

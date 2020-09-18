@@ -11,6 +11,7 @@ export default (sequelize, Sequelize) => {
         name: {
             type: Sequelize.STRING,
             allowNull: false,
+            unique: true,
         },
         exposure: {
             type: Sequelize.ENUM({ values: EXPOSURES }),

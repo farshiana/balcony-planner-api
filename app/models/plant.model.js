@@ -8,7 +8,7 @@ export default (sequelize, Sequelize) => {
         },
         notes: {
             type: Sequelize.STRING,
-            allowNull: false,
+            allowNull: true,
         },
         createdAt: {
             type: Sequelize.DATE,
