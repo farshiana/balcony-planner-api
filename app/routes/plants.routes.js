@@ -11,7 +11,7 @@ const notes = body('notes').trim().escape().notEmpty();
 const varietyId = body('varietyId').isUUID();
 
 export default (app) => {
-    app.post('/users/:userId/plants', checkAuth, validator(notes, varietyId), addPlant);
-    app.put('/users/:userId/plants/:plantId', checkAuth, validator(notes), updatePlant);
-    app.get('/users/:userId/plants', checkAuth, getAllPlants);
+    app.post('/plants', checkAuth, validator(notes, varietyId), addPlant);
+    app.put('/plants/:plantId', checkAuth, validator(notes), updatePlant);
+    app.get('/plants', checkAuth, getAllPlants);
 };

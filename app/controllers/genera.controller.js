@@ -27,7 +27,7 @@ export const updateGenus = async (req, res) => {
     try {
         const genus = await Genus.findByPk(req.params.genusId);
         if (!genus) {
-            return res.status(404).send({ message: 'Genus was not found' });
+            return res.status(404).send({ message: 'Genus does not exist' });
         }
 
         await genus.update({

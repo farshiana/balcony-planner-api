@@ -6,7 +6,7 @@ export const addPlant = async (req, res) => {
     try {
         const variety = await Variety.findByPk(req.body.varietyId);
         if (!variety) {
-            return res.status(404).send({ message: 'Variety was not found' });
+            return res.status(404).send({ message: 'Variety does not exist' });
         }
 
         const plant = await Plant.create({
@@ -33,7 +33,7 @@ export const updatePlant = async (req, res) => {
     try {
         const plant = await Plant.findByPk(req.params.plantId);
         if (!plant) {
-            return res.status(404).send({ message: 'Plant was not found' });
+            return res.status(404).send({ message: 'Plant does not exist' });
         }
 
         await plant.update({ notes: req.body.notes });

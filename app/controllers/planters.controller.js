@@ -30,7 +30,7 @@ export const updatePlanter = async (req, res) => {
     try {
         const planter = await Planter.findByPk(req.params.planterId);
         if (!planter) {
-            return res.status(404).send({ message: 'Planter was not found' });
+            return res.status(404).send({ message: 'Planter does not exist' });
         }
 
         if (!res.locals.user.hasPlanter(planter)) {

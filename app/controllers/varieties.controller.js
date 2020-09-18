@@ -6,7 +6,7 @@ export const addVariety = async (req, res) => {
     try {
         const genus = await Genus.findByPk(req.params.genusId);
         if (!genus) {
-            return res.status(404).send({ message: 'Genus was not found' });
+            return res.status(404).send({ message: 'Genus does not exist' });
         }
 
         const variety = await genus.createVariety({
@@ -27,7 +27,7 @@ export const getAllVarieties = async (req, res) => {
     try {
         const genus = await Genus.findByPk(req.params.genusId);
         if (!genus) {
-            return res.status(404).send({ message: 'Genus was not found' });
+            return res.status(404).send({ message: 'Genus does not exist' });
         }
 
         const varieties = await genus.getVarieties();
@@ -41,7 +41,7 @@ export const updateVariety = async (req, res) => {
     try {
         const variety = await Variety.findByPk(req.params.varietyId);
         if (!variety) {
-            return res.status(404).send({ message: 'Variety was not found' });
+            return res.status(404).send({ message: 'Variety does not exist' });
         }
 
         await variety.update({

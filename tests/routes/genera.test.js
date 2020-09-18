@@ -3,7 +3,7 @@ import faker from 'faker';
 import app from '@/server';
 import { CATEGORIES } from '@/constants';
 import db from '@/models/models';
-import createCookie from '../factories/cookie.factory';
+import auth from '../factories/auth.factory';
 import createGenus from '../factories/genus.factory';
 
 const { Genus } = db;
@@ -12,7 +12,7 @@ const route = '/genera';
 describe(route, () => {
     let cookie;
     beforeAll(async () => {
-        cookie = await createCookie();
+        ({ cookie } = await auth());
     });
 
     describe('index', () => {
@@ -91,6 +91,14 @@ describe(route, () => {
 
             expect(res.statusCode).toEqual(401);
             expect(res.body.message).toEqual('Authentication is required');
+        });
+
+        it('does not update genus that does not exist', async () => {
+            const res = await request(app).put(`${route}/${faker.random.uuid()}`)
+                .set('Cookie', cookie).send({ ...params, name: 'inexistent' });
+
+            expect(res.statusCode).toEqual(404);
+            expect(res.body.message).toEqual('Genus does not exist');
         });
 
         it('does not update genus with existing name', async () => {

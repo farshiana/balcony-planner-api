@@ -28,7 +28,7 @@ export const login = async (req, res) => {
         });
 
         if (!user) {
-            return res.status(404).send({ message: 'User was not found' });
+            return res.status(404).send({ message: 'User does not exist' });
         }
 
         const isValid = bcrypt.compareSync(req.body.password, user.password);

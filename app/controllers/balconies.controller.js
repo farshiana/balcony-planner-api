@@ -1,21 +1,18 @@
 import db from '../models/models';
 
-const { Balcony } = db;
-
 // eslint-disable-next-line import/prefer-default-export
 export const updateBalcony = async (req, res) => {
     try {
-        const balcony = await Balcony.findByPk(req.params.balconyId);
+        const balcony = await res.locals.user.getBalcony();
         if (!balcony) {
-            return res.status(404).send({ message: 'Balcony was not found' });
+            return res.status(404).send({ message: 'Balcony does not exist' });
         }
 
-        if (!res.locals.user.hasBalcony(balcony)) {
+        if (balcony.id !== req.params.balconyId) {
             return res.status(401).send({ message: 'You cannot edit this balcony' });
         }
 
         await balcony.update({
-            name: req.body.name,
             width: req.body.width,
             height: req.body.height,
         });

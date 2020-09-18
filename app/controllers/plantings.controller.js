@@ -6,7 +6,7 @@ export const addPlanting = async (req, res) => {
     try {
         const planter = await Planter.findByPk(req.params.planterId);
         if (!planter) {
-            return res.status(404).send({ message: 'Planter was not found' });
+            return res.status(404).send({ message: 'Planter does not exist' });
         }
 
         if (!res.locals.user.hasPlanter(planter)) {
@@ -29,12 +29,12 @@ export const updatePlanting = async (req, res) => {
     try {
         const planting = await Planting.findByPk(req.params.plantingId);
         if (!planting) {
-            return res.status(404).send({ message: 'Planting was not found' });
+            return res.status(404).send({ message: 'Planting does not exist' });
         }
 
         const planter = await Planter.findByPk(req.params.planterId);
         if (!planter) {
-            return res.status(404).send({ message: 'Planter was not found' });
+            return res.status(404).send({ message: 'Planter does not exist' });
         }
 
         if (!res.locals.user.hasPlanter(planter) || !planter.hasPlanting(planting)) {

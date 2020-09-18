@@ -10,5 +10,9 @@ export default async () => {
     });
     expect(res.statusCode).toEqual(200);
 
-    return [res.headers['set-cookie'].pop().split(';')[0]];
+    return {
+        cookie: [res.headers['set-cookie'].pop().split(';')[0]],
+        userId: res.body.id,
+        balconyId: res.body.balcony.id,
+    };
 };
