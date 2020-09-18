@@ -57,7 +57,6 @@ module.exports = {
             onDelete: 'CASCADE',
         }),
     ]),
-
     down: async (queryInterface, Sequelize) => Promise.all([
         queryInterface.removeColumn('users', 'balconyId'),
         queryInterface.removeColumn('varieties', 'genusId'),
