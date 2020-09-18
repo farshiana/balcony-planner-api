@@ -1,9 +1,9 @@
 module.exports = {
     up: (queryInterface, Sequelize) => Promise.all([
-        queryInterface.addColumn('users', 'balconyId', {
+        queryInterface.addColumn('balconies', 'userId', {
             type: Sequelize.UUID,
             references: {
-                model: 'balconies',
+                model: 'users',
                 key: 'id',
             },
             onDelete: 'CASCADE',

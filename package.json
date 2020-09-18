@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "private": true,
     "scripts": {
-        "start": "cross-env NODE_ENV=development&&nodemon --exec babel-node app/server.js",
+        "start": "cross-env NODE_ENV=development nodemon --exec babel-node app/server.js",
         "lint": "eslint --fix .",
         "migrate": "npx sequelize-cli db:migrate",
         "migrate:reset": "npx sequelize-cli db:migrate:undo:all && yarn migrate",
