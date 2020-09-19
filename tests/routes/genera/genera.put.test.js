@@ -26,7 +26,7 @@ describe('Genera PUT', () => {
     });
 
     describe('updates genus', () => {
-        it('with all params', async () => {
+        it('with params', async () => {
             const res = await request(app).put(`${route}/${genus.id}`)
                 .set('Cookie', cookie).send(params);
             expect(res.statusCode).toEqual(200);

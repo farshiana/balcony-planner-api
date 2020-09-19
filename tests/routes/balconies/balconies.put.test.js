@@ -20,7 +20,7 @@ describe('Balconies PUT', () => {
     });
 
     describe('updates balcony', () => {
-        it('with all params', async () => {
+        it('with params', async () => {
             const res = await request(app).put(`${route}/${balcony.id}`)
                 .set('Cookie', cookie).send(params);
             expect(res.statusCode).toEqual(200);

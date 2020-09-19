@@ -11,7 +11,7 @@ describe('Genera GET', () => {
         ({ cookie } = await auth());
     });
 
-    describe('returns', () => {
+    describe('lists', () => {
         it('all genera', async () => {
             const genus1 = await createGenus();
             const genus2 = await createGenus();
@@ -19,6 +19,15 @@ describe('Genera GET', () => {
 
             expect(res.statusCode).toEqual(200);
             expect(res.body).toEqual(JSON.parse(JSON.stringify([genus1, genus2])));
+        });
+    });
+
+    describe('does not list genera', () => {
+        it('when user is not authenticated', async () => {
+            const res = await request(app).get(route).send();
+
+            expect(res.statusCode).toEqual(401);
+            expect(res.body.message).toEqual('Authentication is required');
         });
     });
 });

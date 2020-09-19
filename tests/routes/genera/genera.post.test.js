@@ -24,7 +24,7 @@ describe('Genera POST', () => {
     });
 
     describe('creates genus', () => {
-        it('with all params', async () => {
+        it('with params', async () => {
             const res = await request(app).post(route).set('Cookie', cookie).send(params);
             expect(res.statusCode).toEqual(201);
 
