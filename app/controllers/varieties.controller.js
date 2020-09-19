@@ -4,7 +4,7 @@ const { Variety, Genus } = db;
 
 export const addVariety = async (req, res) => {
     try {
-        const genus = await Genus.findByPk(req.params.genusId);
+        const genus = await Genus.findByPk(req.body.genusId);
         if (!genus) {
             return res.status(404).send({ message: 'Genus does not exist' });
         }
@@ -17,7 +17,7 @@ export const addVariety = async (req, res) => {
             plant: req.body.plant,
             harvest: req.body.harvest,
         });
-        return res.status(200).send(variety);
+        return res.status(201).send(variety);
     } catch (error) {
         return res.status(500).send({ message: error.message });
     }
@@ -25,12 +25,18 @@ export const addVariety = async (req, res) => {
 
 export const getAllVarieties = async (req, res) => {
     try {
-        const genus = await Genus.findByPk(req.params.genusId);
-        if (!genus) {
-            return res.status(404).send({ message: 'Genus does not exist' });
+        const { genusId } = req.query;
+        if (genusId) {
+            const genus = await Genus.findByPk(genusId);
+            if (!genus) {
+                return res.status(404).send({ message: 'Genus does not exist' });
+            }
+
+            const varieties = await genus.getVarieties();
+            return res.status(200).send(varieties);
         }
 
-        const varieties = await genus.getVarieties();
+        const varieties = await Variety.findAll();
         return res.status(200).send(varieties);
     } catch (error) {
         return res.status(500).send({ message: error.message });

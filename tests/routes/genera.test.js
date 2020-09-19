@@ -48,6 +48,10 @@ describe(route, () => {
             expect(res.body.message).toEqual('Authentication is required');
         });
 
+        it('does not create genus with non admin user', async () => {
+            // TODO
+        });
+
         it('does not create genus with existing name', async () => {
             await createGenus({ name: 'duplicate' });
             const res = await request(app).post(route)
@@ -91,6 +95,10 @@ describe(route, () => {
 
             expect(res.statusCode).toEqual(401);
             expect(res.body.message).toEqual('Authentication is required');
+        });
+
+        it('does not update genus with non admin user', async () => {
+            // TODO
         });
 
         it('does not update genus that does not exist', async () => {

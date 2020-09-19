@@ -3,6 +3,7 @@ import { addVariety, getAllVarieties, updateVariety } from '../controllers/varie
 import validator from '../middlewares/validator.middleware';
 import { checkAuth, checkAdmin } from '../middlewares/auth.middleware';
 import { EXPOSURES, WATERINGS } from '../constants';
+import { checkDuplicates } from '../middlewares/varieties.middleware';
 
 const name = body('name').trim().escape().notEmpty();
 const exposure = body('exposure').isIn(EXPOSURES);
@@ -14,9 +15,9 @@ const genusId = body('genusId').isUUID();
 // TODO: validate array of numbers between 0 & 11
 
 export default (app) => {
-    app.post('/genera/:genusId/varieties', checkAuth, checkAdmin,
-        validator(name, exposure, watering, seed, plant, harvest, genusId), addVariety);
-    app.put('/genera/:genusId/varieties/:varietyId', checkAuth, checkAdmin,
-        validator(name, exposure, watering, seed, plant, harvest, genusId), updateVariety);
-    app.get('/genera/:genusId/varieties', checkAuth, getAllVarieties);
+    app.post('/varieties', checkAuth, checkAdmin,
+        validator(name, exposure, watering, seed, plant, harvest, genusId), checkDuplicates, addVariety);
+    app.put('/varieties/:varietyId', checkAuth, checkAdmin,
+        validator(name, exposure, watering, seed, plant, harvest), checkDuplicates, updateVariety);
+    app.get('/varieties', checkAuth, getAllVarieties);
 };

@@ -9,8 +9,8 @@ const { Balcony } = db;
 const route = '/balconies';
 
 describe(route, () => {
-    let cookie; let
-        balconyId;
+    let cookie;
+    let balconyId;
     beforeAll(async () => {
         ({ cookie, balconyId } = await auth());
     });
@@ -35,6 +35,13 @@ describe(route, () => {
             expect(res.body).toEqual(JSON.parse(JSON.stringify(balcony)));
         });
 
+        it('does not update balcony with unauthenticated user', async () => {
+            const res = await request(app).put(`${route}/${balcony.id}`).send(params);
+
+            expect(res.statusCode).toEqual(401);
+            expect(res.body.message).toEqual('You cannot edit this balcony');
+        });
+
         it('does not update balcony that does not exist', async () => {
             const res = await request(app).put(`${route}/${faker.random.uuid()}`)
                 .set('Cookie', cookie).send(params);
@@ -52,7 +59,7 @@ describe(route, () => {
             expect(res.body.message).toEqual('You cannot edit this balcony');
         });
 
-        it('does not update balcony with negative width', async () => {
+        it('does not update balcony with invalid width', async () => {
             const res = await request(app).put(`${route}/${balcony.id}`)
                 .set('Cookie', cookie).send({ ...params, width: -100 });
 
