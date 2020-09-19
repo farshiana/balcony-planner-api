@@ -2,11 +2,12 @@ import request from 'supertest';
 import faker from 'faker';
 import app from '@/server';
 
-export default async () => {
+export default async (props = {}) => {
     const res = await request(app).post('/auth/register').send({
         email: faker.internet.email(),
         username: faker.name.firstName(),
         password: faker.internet.password(),
+        ...props,
     });
     expect(res.statusCode).toEqual(200);
 
