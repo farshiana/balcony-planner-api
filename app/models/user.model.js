@@ -39,7 +39,6 @@ export default (sequelize, Sequelize) => {
     User.associate = (models) => {
         User.hasOne(models.Balcony, { foreignKey: 'userId', as: 'balcony' });
         User.hasMany(models.Planter, { foreignKey: 'userId', as: 'planters' });
-        User.hasMany(models.Planting, { foreignKey: 'userId', as: 'plantings' });
     };
 
     return User;

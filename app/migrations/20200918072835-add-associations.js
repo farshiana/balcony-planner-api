@@ -48,14 +48,6 @@ module.exports = {
             },
             onDelete: 'CASCADE',
         }),
-        queryInterface.addColumn('plantings', 'userId', {
-            type: Sequelize.UUID,
-            references: {
-                model: 'users',
-                key: 'id',
-            },
-            onDelete: 'CASCADE',
-        }),
     ]),
     down: async (queryInterface) => Promise.all([
         queryInterface.removeColumn('balconies', 'userId'),
@@ -64,6 +56,5 @@ module.exports = {
         queryInterface.removeColumn('plants', 'varietyId'),
         queryInterface.removeColumn('planters', 'userId'),
         queryInterface.removeColumn('plantings', 'planterId'),
-        queryInterface.removeColumn('plantings', 'userId'),
     ]),
 };

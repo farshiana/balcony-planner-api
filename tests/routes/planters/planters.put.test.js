@@ -4,13 +4,15 @@ import app from '@/server';
 import { SHAPES, COLORS, EXPOSURES } from '@/constants';
 import auth from '../../factories/auth.factory';
 import createPlanter from '../../factories/planter.factory';
+import createUser from '../../factories/user.factory';
 
 const route = '/planters';
 
 describe('Planters PUT', () => {
     let cookie;
+    let userId;
     beforeAll(async () => {
-        ({ cookie } = await auth());
+        ({ cookie, userId } = await auth());
     });
 
     let params;
@@ -19,11 +21,11 @@ describe('Planters PUT', () => {
         params = {
             name: faker.lorem.word(),
             shape: SHAPES[1],
-            dimensions: { radius: faker.random.number() },
+            dimensions: JSON.stringify({ radius: faker.random.number() }),
             color: COLORS[1],
             exposure: EXPOSURES[1],
         };
-        planter = await createPlanter();
+        planter = await createPlanter({ userId });
     });
 
     describe('updates planter', () => {
@@ -55,8 +57,9 @@ describe('Planters PUT', () => {
         });
 
         it('that belongs to another user', async () => {
-            const other = await createPlanter();
-            const res = await request(app).put(`${route}/${other.id}`)
+            const user = await createUser();
+            const target = await user.createPlanter(params);
+            const res = await request(app).put(`${route}/${target.id}`)
                 .set('Cookie', cookie).send(params);
 
             expect(res.statusCode).toEqual(401);

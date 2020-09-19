@@ -14,7 +14,7 @@ export const addPlant = async (req, res) => {
             varietyId: req.body.varietyId,
             notes: req.body.notes,
         });
-        return res.status(200).send(plant);
+        return res.status(201).send(plant);
     } catch (error) {
         return res.status(500).send({ message: error.message });
     }

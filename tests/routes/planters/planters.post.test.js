@@ -19,7 +19,7 @@ describe('Planters POST', () => {
         params = {
             name: faker.lorem.word(),
             shape: SHAPES[0],
-            dimensions: { radius: faker.random.number() },
+            dimensions: JSON.stringify({ radius: faker.random.number() }),
             color: COLORS[0],
             exposure: EXPOSURES[0],
         };

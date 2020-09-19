@@ -9,7 +9,8 @@ export const addPlanting = async (req, res) => {
             return res.status(404).send({ message: 'Planter does not exist' });
         }
 
-        if (!res.locals.user.hasPlanter(planter)) {
+        const belongs = await res.locals.user.hasPlanter(planter);
+        if (!belongs) {
             return res.status(401).send({ message: 'You cannot create this planting' });
         }
 
@@ -37,7 +38,9 @@ export const updatePlanting = async (req, res) => {
             return res.status(404).send({ message: 'Planter does not exist' });
         }
 
-        if (!res.locals.user.hasPlanter(planter) || !planter.hasPlanting(planting)) {
+        const belongs = await res.locals.user.hasPlanter(planter)
+            && await planter.hasPlanting(planting);
+        if (!belongs) {
             return res.status(401).send({ message: 'You cannot edit this planting' });
         }
 

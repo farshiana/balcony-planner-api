@@ -11,7 +11,7 @@ export const addPlanter = async (req, res) => {
             color: req.body.color,
             exposure: req.body.exposure,
         });
-        return res.status(200).send(planter);
+        return res.status(201).send(planter);
     } catch (error) {
         return res.status(500).send({ message: error.message });
     }
@@ -33,11 +33,12 @@ export const updatePlanter = async (req, res) => {
             return res.status(404).send({ message: 'Planter does not exist' });
         }
 
-        if (!res.locals.user.hasPlanter(planter)) {
+        const belongs = await res.locals.user.hasPlanter(planter);
+        if (!belongs) {
             return res.status(401).send({ message: 'You cannot edit this planter' });
         }
 
-        planter.update({
+        await planter.update({
             name: req.body.name,
             shape: req.body.shape,
             dimensions: req.body.dimensions,
