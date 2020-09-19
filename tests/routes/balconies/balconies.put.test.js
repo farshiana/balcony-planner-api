@@ -2,30 +2,25 @@ import request from 'supertest';
 import faker from 'faker';
 import app from '@/server';
 import db from '@/models/models';
-import auth from '../factories/auth.factory';
-import createBalcony from '../factories/balcony.factory';
+import auth from '../../factories/auth.factory';
+import createBalcony from '../../factories/balcony.factory';
 
 const { Balcony } = db;
 const route = '/balconies';
 
-describe(route, () => {
+describe('Balconies PUT', () => {
     let cookie;
     let balconyId;
-    beforeAll(async () => {
+    let balcony;
+    let params;
+    beforeEach(async () => {
         ({ cookie, balconyId } = await auth());
+        balcony = await Balcony.findByPk(balconyId);
+        params = { width: faker.random.number(), height: faker.random.number() };
     });
 
-    describe('update', () => {
-        const params = {
-            width: faker.random.number(),
-            height: faker.random.number(),
-        };
-        let balcony;
-        beforeAll(async () => {
-            balcony = await Balcony.findByPk(balconyId);
-        });
-
-        it('updates balcony', async () => {
+    describe('updates balcony', () => {
+        it('with all params', async () => {
             const res = await request(app).put(`${route}/${balcony.id}`)
                 .set('Cookie', cookie).send(params);
             expect(res.statusCode).toEqual(200);
@@ -34,15 +29,17 @@ describe(route, () => {
             expect(res.body).toMatchObject(params);
             expect(res.body).toEqual(JSON.parse(JSON.stringify(balcony)));
         });
+    });
 
-        it('does not update balcony with unauthenticated user', async () => {
+    describe('does not update balcony', () => {
+        it('with unauthenticated user', async () => {
             const res = await request(app).put(`${route}/${balcony.id}`).send(params);
 
             expect(res.statusCode).toEqual(401);
-            expect(res.body.message).toEqual('You cannot edit this balcony');
+            expect(res.body.message).toEqual('Authentication is required');
         });
 
-        it('does not update balcony that does not exist', async () => {
+        it('that does not exist', async () => {
             const res = await request(app).put(`${route}/${faker.random.uuid()}`)
                 .set('Cookie', cookie).send(params);
 
@@ -50,7 +47,7 @@ describe(route, () => {
             expect(res.body.message).toEqual('You cannot edit this balcony');
         });
 
-        it('does not update balcony that belongs to another user', async () => {
+        it('of another user', async () => {
             const other = await createBalcony();
             const res = await request(app).put(`${route}/${other.id}`)
                 .set('Cookie', cookie).send(params);
@@ -59,7 +56,7 @@ describe(route, () => {
             expect(res.body.message).toEqual('You cannot edit this balcony');
         });
 
-        it('does not update balcony with invalid width', async () => {
+        it('with invalid width', async () => {
             const res = await request(app).put(`${route}/${balcony.id}`)
                 .set('Cookie', cookie).send({ ...params, width: -100 });
 
