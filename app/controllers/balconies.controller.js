@@ -1,5 +1,3 @@
-import db from '../models/models';
-
 // eslint-disable-next-line import/prefer-default-export
 export const updateBalcony = async (req, res) => {
     try {

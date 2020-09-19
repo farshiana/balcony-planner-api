@@ -10,7 +10,7 @@ import createGenus from '../../factories/genus.factory';
 const { Variety } = db;
 const route = '/varieties';
 
-describe('Genera POST', () => {
+describe('Varieties POST', () => {
     let cookie;
     let genus;
     beforeAll(async () => {

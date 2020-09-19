@@ -2,11 +2,9 @@ import request from 'supertest';
 import faker from 'faker';
 import app from '@/server';
 import { CATEGORIES } from '@/constants';
-import db from '@/models/models';
 import auth from '../../factories/auth.factory';
 import createGenus from '../../factories/genus.factory';
 
-const { Genus } = db;
 const route = '/genera';
 
 describe('Genera PUT', () => {

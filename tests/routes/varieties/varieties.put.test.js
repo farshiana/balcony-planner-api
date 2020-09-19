@@ -1,20 +1,16 @@
 import request from 'supertest';
 import faker from 'faker';
 import app from '@/server';
-import db from '@/models/models';
 import { EXPOSURES, WATERINGS } from '@/constants';
 import auth from '../../factories/auth.factory';
 import createVariety from '../../factories/variety.factory';
-import createGenus from '../../factories/genus.factory';
 
 const route = '/varieties';
 
 describe('Varieties PUT', () => {
     let cookie;
-    let genus;
     beforeAll(async () => {
         ({ cookie } = await auth());
-        genus = await createGenus();
     });
 
     let params;
@@ -53,18 +49,18 @@ describe('Varieties PUT', () => {
     });
 
     describe('does not update variety', () => {
-        it('does not update variety with unauthenticated user', async () => {
+        it('with unauthenticated user', async () => {
             const res = await request(app).put(`${route}/${variety.id}`).send(params);
 
             expect(res.statusCode).toEqual(401);
             expect(res.body.message).toEqual('Authentication is required');
         });
 
-        it('does not update variety with non admin user', async () => {
+        it('with non admin user', async () => {
             // TODO
         });
 
-        it('does not update variety that does not exist', async () => {
+        it('that does not exist', async () => {
             const res = await request(app).put(`${route}/${faker.random.uuid()}`)
                 .set('Cookie', cookie).send({ ...params, name: 'inexistent' });
 
@@ -72,7 +68,7 @@ describe('Varieties PUT', () => {
             expect(res.body.message).toEqual('Variety does not exist');
         });
 
-        it('does not update variety with existing name', async () => {
+        it('with existing name', async () => {
             await createVariety(params);
             const res = await request(app).put(`${route}/${variety.id}`).set('Cookie', cookie).send(params);
 
@@ -80,7 +76,7 @@ describe('Varieties PUT', () => {
             expect(res.body.message).toEqual('Variety already exists');
         });
 
-        it('does not update variety with invalid exposure', async () => {
+        it('with invalid exposure', async () => {
             const res = await request(app).put(`${route}/${variety.id}`)
                 .set('Cookie', cookie).send({ ...params, exposure: 'invalid' });
 
@@ -88,7 +84,7 @@ describe('Varieties PUT', () => {
             // expect(res.body.message).toEqual(''); TODO: custom message
         });
 
-        it('does not update variety with invalid watering', async () => {
+        it('with invalid watering', async () => {
             const res = await request(app).put(`${route}/${variety.id}`)
                 .set('Cookie', cookie).send({ ...params, watering: 'invalid' });
 
@@ -96,15 +92,15 @@ describe('Varieties PUT', () => {
             // expect(res.body.message).toEqual(''); TODO: custom message
         });
 
-        it('does not update variety with invalid seed', async () => {
+        it('with invalid seed', async () => {
             // TODO: implement rules
         });
 
-        it('does not update variety with invalid plant', async () => {
+        it('with invalid plant', async () => {
             // TODO: implement rules
         });
 
-        it('does not update variety with invalid harvest', async () => {
+        it('with invalid harvest', async () => {
             // TODO: implement rules
         });
     });
