@@ -48,6 +48,9 @@ export default (sequelize, Sequelize) => {
             foreignKey: 'genusId',
             as: 'genus',
         });
+        Variety.belongsToMany(models.Planter, {
+            through: 'plantings',
+        });
     };
 
     return Variety;

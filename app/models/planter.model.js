@@ -39,9 +39,8 @@ export default (sequelize, Sequelize) => {
     });
 
     Planter.associate = (models) => {
-        Planter.hasMany(models.Planting, {
-            foreignKey: 'planterId',
-            as: 'plantings',
+        Planter.belongsToMany(models.Variety, {
+            through: 'plantings',
         });
     };
 

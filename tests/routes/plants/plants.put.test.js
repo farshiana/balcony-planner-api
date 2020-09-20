@@ -1,23 +1,16 @@
 import request from 'supertest';
 import faker from 'faker';
 import app from '@/server';
-import db from '@/models/models';
 import auth from '../../factories/auth.factory';
 import createPlant from '../../factories/plant.factory';
-import createGenus from '../../factories/genus.factory';
-import createVariety from '../../factories/variety.factory';
 
-const { Plant } = db;
 const route = '/plants';
 
 describe('Plants PUT', () => {
     let cookie;
     let userId;
-    let variety;
     beforeAll(async () => {
         ({ cookie, userId } = await auth());
-        const genus = await createGenus();
-        variety = await createVariety({ genusId: genus.id });
     });
 
     let params;
