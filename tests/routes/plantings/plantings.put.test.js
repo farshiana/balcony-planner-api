@@ -13,16 +13,18 @@ const route = '/plantings';
 describe('Plantings PUT', () => {
     let cookie;
     let userId;
+    let variety;
+    let planter;
     beforeAll(async () => {
         ({ cookie, userId } = await auth());
+        const genus = await createGenus();
+        variety = await createVariety({ genusId: genus.id });
+        planter = await createPlanter({ userId });
     });
 
     let params;
     let planting;
     beforeEach(async () => {
-        const genus = await createGenus();
-        const variety = await createVariety({ genusId: genus.id });
-        const planter = await createPlanter({ userId });
         params = {
             seed: [0, 1, 2],
             plant: [3, 4, 5],
