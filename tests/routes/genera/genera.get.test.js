@@ -7,8 +7,9 @@ const route = '/genera';
 
 describe('Genera GET', () => {
     let cookie;
-    beforeAll(async () => {
+    beforeAll(async (done) => {
         ({ cookie } = await auth());
+        done();
     });
 
     describe('lists', () => {
@@ -17,8 +18,8 @@ describe('Genera GET', () => {
             const genus2 = await createGenus();
             const res = await request(app).get(route).set('Cookie', cookie).send();
 
-            expect(res.statusCode).toEqual(200);
             expect(res.body).toEqual(JSON.parse(JSON.stringify([genus1, genus2])));
+            expect(res.statusCode).toEqual(200);
         });
     });
 
@@ -26,8 +27,8 @@ describe('Genera GET', () => {
         it('when user is not authenticated', async () => {
             const res = await request(app).get(route).send();
 
-            expect(res.statusCode).toEqual(401);
             expect(res.body.message).toEqual('Authentication is required');
+            expect(res.statusCode).toEqual(401);
         });
     });
 });

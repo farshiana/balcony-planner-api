@@ -13,9 +13,10 @@ const route = '/varieties';
 describe('Varieties POST', () => {
     let cookie;
     let genus;
-    beforeAll(async () => {
+    beforeAll(async (done) => {
         ({ cookie } = await auth());
         genus = await createGenus();
+        done();
     });
 
     let params;
@@ -34,11 +35,11 @@ describe('Varieties POST', () => {
     describe('creates variety', () => {
         it('with params', async () => {
             const res = await request(app).post(route).set('Cookie', cookie).send(params);
-            expect(res.statusCode).toEqual(201);
 
             const variety = await Variety.findByPk(res.body.id);
             expect(res.body).toMatchObject(params);
             expect(res.body).toEqual(JSON.parse(JSON.stringify(variety)));
+            expect(res.statusCode).toEqual(201);
         });
     });
 
@@ -46,8 +47,8 @@ describe('Varieties POST', () => {
         it('with unauthenticated user', async () => {
             const res = await request(app).post(route).send(params);
 
-            expect(res.statusCode).toEqual(401);
             expect(res.body.message).toEqual('Authentication is required');
+            expect(res.statusCode).toEqual(401);
         });
 
         it('with non admin user', async () => {
@@ -58,32 +59,32 @@ describe('Varieties POST', () => {
             const res = await request(app).post(route).set('Cookie', cookie)
                 .send({ ...params, name: faker.lorem.word(), genusId: faker.random.uuid() });
 
-            expect(res.statusCode).toEqual(404);
             expect(res.body.message).toEqual('Genus does not exist');
+            expect(res.statusCode).toEqual(404);
         });
 
         it('with existing name', async () => {
             await createVariety(params);
             const res = await request(app).post(route).set('Cookie', cookie).send(params);
 
-            expect(res.statusCode).toEqual(400);
             expect(res.body.message).toEqual('Variety already exists');
+            expect(res.statusCode).toEqual(400);
         });
 
         it('with invalid exposure', async () => {
             const res = await request(app).post(route)
                 .set('Cookie', cookie).send({ ...params, exposure: 'invalid' });
 
-            expect(res.statusCode).toEqual(400);
             // expect(res.body.message).toEqual(''); TODO: custom message
+            expect(res.statusCode).toEqual(400);
         });
 
         it('with invalid watering', async () => {
             const res = await request(app).post(route)
                 .set('Cookie', cookie).send({ ...params, watering: 'invalid' });
 
-            expect(res.statusCode).toEqual(400);
             // expect(res.body.message).toEqual(''); TODO: custom message
+            expect(res.statusCode).toEqual(400);
         });
 
         it('with invalid seed', async () => {

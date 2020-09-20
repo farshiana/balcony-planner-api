@@ -9,13 +9,14 @@ const route = '/varieties';
 
 describe('Varieties PUT', () => {
     let cookie;
-    beforeAll(async () => {
+    beforeAll(async (done) => {
         ({ cookie } = await auth());
+        done();
     });
 
     let params;
     let variety;
-    beforeEach(async () => {
+    beforeEach(async (done) => {
         params = {
             name: faker.lorem.word(),
             exposure: EXPOSURES[1],
@@ -25,26 +26,18 @@ describe('Varieties PUT', () => {
             harvest: [6, 7, 8],
         };
         variety = await createVariety();
+        done();
     });
 
     describe('updates variety', () => {
         it('with params', async () => {
             const res = await request(app).put(`${route}/${variety.id}`)
                 .set('Cookie', cookie).send(params);
+
+            await variety.reload();
+            expect(res.body).toMatchObject(params);
+            expect(res.body).toEqual(JSON.parse(JSON.stringify(variety)));
             expect(res.statusCode).toEqual(200);
-
-            await variety.reload();
-            expect(res.body).toMatchObject(params);
-            expect(res.body).toEqual(JSON.parse(JSON.stringify(variety)));
-        });
-
-        it('without changing genusId', async () => {
-            const res = await request(app).put(`${route}/${variety.id}`)
-                .set('Cookie', cookie).send({ ...params, genusId: faker.random.uuid() });
-
-            await variety.reload();
-            expect(res.body).toMatchObject(params);
-            expect(res.body).toEqual(JSON.parse(JSON.stringify(variety)));
         });
     });
 
@@ -52,8 +45,8 @@ describe('Varieties PUT', () => {
         it('with unauthenticated user', async () => {
             const res = await request(app).put(`${route}/${variety.id}`).send(params);
 
-            expect(res.statusCode).toEqual(401);
             expect(res.body.message).toEqual('Authentication is required');
+            expect(res.statusCode).toEqual(401);
         });
 
         it('with non admin user', async () => {
@@ -64,32 +57,40 @@ describe('Varieties PUT', () => {
             const res = await request(app).put(`${route}/${faker.random.uuid()}`)
                 .set('Cookie', cookie).send({ ...params, name: 'inexistent' });
 
-            expect(res.statusCode).toEqual(404);
             expect(res.body.message).toEqual('Variety does not exist');
+            expect(res.statusCode).toEqual(404);
         });
 
         it('with existing name', async () => {
             await createVariety(params);
             const res = await request(app).put(`${route}/${variety.id}`).set('Cookie', cookie).send(params);
 
-            expect(res.statusCode).toEqual(400);
             expect(res.body.message).toEqual('Variety already exists');
+            expect(res.statusCode).toEqual(400);
         });
 
         it('with invalid exposure', async () => {
             const res = await request(app).put(`${route}/${variety.id}`)
                 .set('Cookie', cookie).send({ ...params, exposure: 'invalid' });
 
-            expect(res.statusCode).toEqual(400);
             // expect(res.body.message).toEqual(''); TODO: custom message
+            expect(res.statusCode).toEqual(400);
         });
 
         it('with invalid watering', async () => {
             const res = await request(app).put(`${route}/${variety.id}`)
                 .set('Cookie', cookie).send({ ...params, watering: 'invalid' });
 
-            expect(res.statusCode).toEqual(400);
             // expect(res.body.message).toEqual(''); TODO: custom message
+            expect(res.statusCode).toEqual(400);
+        });
+
+        it('with genusId', async () => {
+            const res = await request(app).put(`${route}/${variety.id}`)
+                .set('Cookie', cookie).send({ ...params, genusId: faker.random.uuid() });
+
+            expect(res.body.message).toEqual('"genusId" is not allowed');
+            expect(res.statusCode).toEqual(400);
         });
 
         it('with invalid seed', async () => {

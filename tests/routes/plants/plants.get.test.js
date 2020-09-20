@@ -11,10 +11,11 @@ describe('Plants GET', () => {
     let cookie;
     let userId;
     let variety;
-    beforeAll(async () => {
+    beforeAll(async (done) => {
         ({ cookie, userId } = await auth());
         const genus = await createGenus();
         variety = await createVariety({ genusId: genus.id });
+        done();
     });
 
     describe('lists', () => {
@@ -24,8 +25,8 @@ describe('Plants GET', () => {
             const plant2 = await createPlant(params);
             const res = await request(app).get(route).set('Cookie', cookie).send();
 
-            expect(res.statusCode).toEqual(200);
             expect(res.body).toEqual(JSON.parse(JSON.stringify([plant1, plant2])));
+            expect(res.statusCode).toEqual(200);
         });
     });
 
@@ -33,8 +34,8 @@ describe('Plants GET', () => {
         it('when user is not authenticated', async () => {
             const res = await request(app).get(route).send();
 
-            expect(res.statusCode).toEqual(401);
             expect(res.body.message).toEqual('Authentication is required');
+            expect(res.statusCode).toEqual(401);
         });
     });
 });

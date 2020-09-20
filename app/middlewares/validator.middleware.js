@@ -1,12 +1,16 @@
-import { validationResult } from 'express-validator';
+import Joi from 'joi';
 
-export default (...validations) => async (req, res, next) => {
-    await Promise.all(validations.map((validation) => validation.run(req)));
+export default (schema, property = 'body') => (req, res, next) => {
+    const { error, value } = Joi.object().keys(schema).validate(req[property]);
 
-    const errors = validationResult(req);
-    if (errors.isEmpty()) {
-        return next();
+    if (error) {
+        const { details } = error;
+        const message = details.map((detail) => detail.message).join(',');
+
+        return res.status(400).json({ message });
     }
 
-    return res.status(400).json({ errors: errors.array() });
+    req[property] = value;
+
+    return next();
 };

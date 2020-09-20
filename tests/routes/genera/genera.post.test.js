@@ -11,8 +11,9 @@ const route = '/genera';
 
 describe('Genera POST', () => {
     let cookie;
-    beforeAll(async () => {
+    beforeAll(async (done) => {
         ({ cookie } = await auth());
+        done();
     });
 
     let params;
@@ -26,11 +27,11 @@ describe('Genera POST', () => {
     describe('creates genus', () => {
         it('with params', async () => {
             const res = await request(app).post(route).set('Cookie', cookie).send(params);
-            expect(res.statusCode).toEqual(201);
 
             const genus = await Genus.findByPk(res.body.id);
             expect(res.body).toMatchObject(params);
             expect(res.body).toEqual(JSON.parse(JSON.stringify(genus)));
+            expect(res.statusCode).toEqual(201);
         });
     });
 
@@ -38,8 +39,8 @@ describe('Genera POST', () => {
         it('with unauthenticated user', async () => {
             const res = await request(app).post(route).send(params);
 
-            expect(res.statusCode).toEqual(401);
             expect(res.body.message).toEqual('Authentication is required');
+            expect(res.statusCode).toEqual(401);
         });
 
         it('with non admin user', async () => {
@@ -51,16 +52,16 @@ describe('Genera POST', () => {
             const res = await request(app).post(route)
                 .set('Cookie', cookie).send(params);
 
-            expect(res.statusCode).toEqual(400);
             expect(res.body.message).toEqual('Genus already exists');
+            expect(res.statusCode).toEqual(400);
         });
 
         it('with invalid category', async () => {
             const res = await request(app).post(route)
                 .set('Cookie', cookie).send({ ...params, category: 'invalid' });
 
-            expect(res.statusCode).toEqual(400);
             // expect(res.body.message).toEqual(''); TODO: custom message
+            expect(res.statusCode).toEqual(400);
         });
     });
 });

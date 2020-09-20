@@ -7,13 +7,13 @@ const route = '/auth/login';
 
 describe('Auth PUT', () => {
     let params;
-    beforeEach(async () => {
+    beforeEach(async (done) => {
         params = {
             email: faker.internet.exampleEmail(),
-            username: faker.name.firstName(),
             password: faker.internet.password(),
         };
         await auth(params);
+        done();
     });
 
     describe('logs user in', () => {
@@ -34,8 +34,8 @@ describe('Auth PUT', () => {
                 password: 'invalidPassword',
             });
 
-            expect(res.statusCode).toEqual(401);
             expect(res.body.message).toEqual('Password is invalid');
+            expect(res.statusCode).toEqual(401);
             expect(res.headers['set-cookie']).not.toBeDefined();
         });
     });

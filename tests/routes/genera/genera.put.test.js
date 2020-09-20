@@ -9,29 +9,31 @@ const route = '/genera';
 
 describe('Genera PUT', () => {
     let cookie;
-    beforeAll(async () => {
+    beforeAll(async (done) => {
         ({ cookie } = await auth());
+        done();
     });
 
     let params;
     let genus;
-    beforeEach(async () => {
+    beforeEach(async (done) => {
         params = {
             name: faker.lorem.word(),
             category: CATEGORIES[1],
         };
         genus = await createGenus();
+        done();
     });
 
     describe('updates genus', () => {
         it('with params', async () => {
             const res = await request(app).put(`${route}/${genus.id}`)
                 .set('Cookie', cookie).send(params);
-            expect(res.statusCode).toEqual(200);
 
             await genus.reload();
             expect(res.body).toMatchObject(params);
             expect(res.body).toEqual(JSON.parse(JSON.stringify(genus)));
+            expect(res.statusCode).toEqual(200);
         });
     });
 
@@ -39,8 +41,8 @@ describe('Genera PUT', () => {
         it('with unauthenticated user', async () => {
             const res = await request(app).put(`${route}/${genus.id}`).send(params);
 
-            expect(res.statusCode).toEqual(401);
             expect(res.body.message).toEqual('Authentication is required');
+            expect(res.statusCode).toEqual(401);
         });
 
         it('with non admin user', async () => {
@@ -51,8 +53,8 @@ describe('Genera PUT', () => {
             const res = await request(app).put(`${route}/${faker.random.uuid()}`)
                 .set('Cookie', cookie).send({ ...params, name: 'inexistent' });
 
-            expect(res.statusCode).toEqual(404);
             expect(res.body.message).toEqual('Genus does not exist');
+            expect(res.statusCode).toEqual(404);
         });
 
         it('with existing name', async () => {
@@ -60,16 +62,16 @@ describe('Genera PUT', () => {
             const res = await request(app).put(`${route}/${genus.id}`)
                 .set('Cookie', cookie).send(params);
 
-            expect(res.statusCode).toEqual(400);
             expect(res.body.message).toEqual('Genus already exists');
+            expect(res.statusCode).toEqual(400);
         });
 
         it('with invalid category', async () => {
             const res = await request(app).put(`${route}/${genus.id}`)
                 .set('Cookie', cookie).send({ ...params, category: 'invalid' });
 
-            expect(res.statusCode).toEqual(400);
             // expect(res.body.message).toEqual(''); TODO: custom message
+            expect(res.statusCode).toEqual(400);
         });
     });
 });

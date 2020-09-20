@@ -1,4 +1,4 @@
-import { body } from 'express-validator';
+import Joi from 'joi';
 import {
     addPlant,
     getAllPlants,
@@ -7,11 +7,11 @@ import {
 import validator from '../middlewares/validator.middleware';
 import { checkAuth } from '../middlewares/auth.middleware';
 
-const notes = body('notes').trim().escape().notEmpty();
-const varietyId = body('varietyId').isUUID();
+const notes = Joi.string().trim();
+const varietyId = Joi.string().uuid().required();
 
 export default (app) => {
-    app.post('/plants', checkAuth, validator(notes, varietyId), addPlant);
-    app.put('/plants/:plantId', checkAuth, validator(notes), updatePlant);
+    app.post('/plants', checkAuth, validator({ notes, varietyId }), addPlant);
+    app.put('/plants/:plantId', checkAuth, validator({ notes }), updatePlant);
     app.get('/plants', checkAuth, getAllPlants);
 };

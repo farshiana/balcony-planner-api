@@ -15,9 +15,10 @@ describe('Planters GET', () => {
     let cookie;
     let userId;
     let user;
-    beforeAll(async () => {
+    beforeAll(async (done) => {
         ({ cookie, userId } = await auth());
         user = await User.findByPk(userId);
+        done();
     });
 
     describe('lists', () => {
@@ -34,11 +35,11 @@ describe('Planters GET', () => {
             const res = await request(app).get(route).set('Cookie', cookie).send();
 
             // TODO: use toEqual for body once API sorts responses
-            expect(res.statusCode).toEqual(200);
             expect(res.body).toMatchObject([
                 { ...JSON.parse(JSON.stringify(planter1)), plantings: [] },
                 { ...JSON.parse(JSON.stringify(planter2)), plantings: [] },
             ]);
+            expect(res.statusCode).toEqual(200);
         });
 
         it('planters with plantings', async () => {
@@ -55,11 +56,11 @@ describe('Planters GET', () => {
             const planting = await createPlanting({ varietyId: variety.id, planterId: planter.id });
             const res = await request(app).get(route).set('Cookie', cookie).send();
 
-            expect(res.statusCode).toEqual(200);
             expect(res.body[0]).toEqual({
                 ...JSON.parse(JSON.stringify(planter)),
                 plantings: [JSON.parse(JSON.stringify(planting))],
             });
+            expect(res.statusCode).toEqual(200);
         });
     });
 
@@ -67,8 +68,8 @@ describe('Planters GET', () => {
         it('when user is not authenticated', async () => {
             const res = await request(app).get(route).send();
 
-            expect(res.statusCode).toEqual(401);
             expect(res.body.message).toEqual('Authentication is required');
+            expect(res.statusCode).toEqual(401);
         });
     });
 });

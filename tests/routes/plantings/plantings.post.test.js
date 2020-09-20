@@ -16,11 +16,12 @@ describe('Plantings POST', () => {
     let userId;
     let variety;
     let planter;
-    beforeAll(async () => {
+    beforeAll(async (done) => {
         ({ cookie, userId } = await auth());
         const genus = await createGenus();
         variety = await createVariety({ genusId: genus.id });
         planter = await createPlanter({ userId });
+        done();
     });
 
     let params;
@@ -37,11 +38,11 @@ describe('Plantings POST', () => {
     describe('creates planting', () => {
         it('with params', async () => {
             const res = await request(app).post(route).set('Cookie', cookie).send(params);
-            expect(res.statusCode).toEqual(201);
 
             const planting = await Planting.findByPk(res.body.id);
             expect(res.body).toMatchObject(params);
             expect(res.body).toEqual(JSON.parse(JSON.stringify(planting)));
+            expect(res.statusCode).toEqual(201);
         });
     });
 
@@ -49,8 +50,8 @@ describe('Plantings POST', () => {
         it('with unauthenticated user', async () => {
             const res = await request(app).post(route).send(params);
 
-            expect(res.statusCode).toEqual(401);
             expect(res.body.message).toEqual('Authentication is required');
+            expect(res.statusCode).toEqual(401);
         });
 
         it('that already exists', async () => {
@@ -61,16 +62,16 @@ describe('Plantings POST', () => {
             const res = await request(app).post(route)
                 .set('Cookie', cookie).send({ ...params, varietyId: faker.random.uuid() });
 
-            expect(res.statusCode).toEqual(404);
             expect(res.body.message).toEqual('Variety does not exist');
+            expect(res.statusCode).toEqual(404);
         });
 
         it('with planter that does not exist', async () => {
             const res = await request(app).post(route)
                 .set('Cookie', cookie).send({ ...params, planterId: faker.random.uuid() });
 
-            expect(res.statusCode).toEqual(404);
             expect(res.body.message).toEqual('Planter does not exist');
+            expect(res.statusCode).toEqual(404);
         });
 
         it('with planter that belongs to another user', async () => {
@@ -80,8 +81,8 @@ describe('Plantings POST', () => {
             const res = await request(app).post(route)
                 .set('Cookie', cookie).send({ ...params, planterId: target.id });
 
-            expect(res.statusCode).toEqual(401);
             expect(res.body.message).toEqual('You cannot create this planting');
+            expect(res.statusCode).toEqual(401);
         });
 
         it('with invalid seed', async () => {

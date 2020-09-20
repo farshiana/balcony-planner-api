@@ -13,21 +13,22 @@ describe('Balconies PUT', () => {
     let balconyId;
     let balcony;
     let params;
-    beforeEach(async () => {
+    beforeEach(async (done) => {
         ({ cookie, balconyId } = await auth());
         balcony = await Balcony.findByPk(balconyId);
         params = { width: faker.random.number(), height: faker.random.number() };
+        done();
     });
 
     describe('updates balcony', () => {
         it('with params', async () => {
             const res = await request(app).put(`${route}/${balcony.id}`)
                 .set('Cookie', cookie).send(params);
-            expect(res.statusCode).toEqual(200);
 
             await balcony.reload();
             expect(res.body).toMatchObject(params);
             expect(res.body).toEqual(JSON.parse(JSON.stringify(balcony)));
+            expect(res.statusCode).toEqual(200);
         });
     });
 
@@ -35,16 +36,16 @@ describe('Balconies PUT', () => {
         it('with unauthenticated user', async () => {
             const res = await request(app).put(`${route}/${balcony.id}`).send(params);
 
-            expect(res.statusCode).toEqual(401);
             expect(res.body.message).toEqual('Authentication is required');
+            expect(res.statusCode).toEqual(401);
         });
 
         it('that does not exist', async () => {
             const res = await request(app).put(`${route}/${faker.random.uuid()}`)
                 .set('Cookie', cookie).send(params);
 
-            expect(res.statusCode).toEqual(401);
             expect(res.body.message).toEqual('You cannot edit this balcony');
+            expect(res.statusCode).toEqual(401);
         });
 
         it('of another user', async () => {
@@ -52,16 +53,16 @@ describe('Balconies PUT', () => {
             const res = await request(app).put(`${route}/${other.id}`)
                 .set('Cookie', cookie).send(params);
 
-            expect(res.statusCode).toEqual(401);
             expect(res.body.message).toEqual('You cannot edit this balcony');
+            expect(res.statusCode).toEqual(401);
         });
 
         it('with invalid width', async () => {
             const res = await request(app).put(`${route}/${balcony.id}`)
                 .set('Cookie', cookie).send({ ...params, width: -100 });
 
-            expect(res.statusCode).toEqual(400);
             // expect(res.body.message).toEqual(''); TODO: custom message
+            expect(res.statusCode).toEqual(400);
         });
     });
 });

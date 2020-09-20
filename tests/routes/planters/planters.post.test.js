@@ -10,8 +10,9 @@ const route = '/planters';
 
 describe('Planters POST', () => {
     let cookie;
-    beforeAll(async () => {
+    beforeAll(async (done) => {
         ({ cookie } = await auth());
+        done();
     });
 
     let params;
@@ -19,7 +20,7 @@ describe('Planters POST', () => {
         params = {
             name: faker.lorem.word(),
             shape: SHAPES[0],
-            dimensions: JSON.stringify({ radius: faker.random.number() }),
+            dimensions: { radius: faker.random.number() },
             color: COLORS[0],
             exposure: EXPOSURES[0],
         };
@@ -28,11 +29,11 @@ describe('Planters POST', () => {
     describe('creates planter', () => {
         it('with params', async () => {
             const res = await request(app).post(route).set('Cookie', cookie).send(params);
-            expect(res.statusCode).toEqual(201);
 
             const planter = await Planter.findByPk(res.body.id);
             expect(res.body).toMatchObject(params);
             expect(res.body).toEqual(JSON.parse(JSON.stringify(planter)));
+            expect(res.statusCode).toEqual(201);
         });
     });
 
@@ -40,16 +41,16 @@ describe('Planters POST', () => {
         it('with unauthenticated user', async () => {
             const res = await request(app).post(route).send(params);
 
-            expect(res.statusCode).toEqual(401);
             expect(res.body.message).toEqual('Authentication is required');
+            expect(res.statusCode).toEqual(401);
         });
 
         it('with invalid shape', async () => {
             const res = await request(app).post(route)
                 .set('Cookie', cookie).send({ ...params, shape: 'invalid' });
 
-            expect(res.statusCode).toEqual(400);
             // expect(res.body.message).toEqual(''); TODO: custom message
+            expect(res.statusCode).toEqual(400);
         });
 
         it('with invalid width', async () => {
@@ -60,16 +61,16 @@ describe('Planters POST', () => {
             const res = await request(app).post(route)
                 .set('Cookie', cookie).send({ ...params, color: 'invalid' });
 
-            expect(res.statusCode).toEqual(400);
             // expect(res.body.message).toEqual(''); TODO: custom message
+            expect(res.statusCode).toEqual(400);
         });
 
         it('with invalid exposure', async () => {
             const res = await request(app).post(route)
                 .set('Cookie', cookie).send({ ...params, exposure: 'invalid' });
 
-            expect(res.statusCode).toEqual(400);
             // expect(res.body.message).toEqual(''); TODO: custom message
+            expect(res.statusCode).toEqual(400);
         });
     });
 });
