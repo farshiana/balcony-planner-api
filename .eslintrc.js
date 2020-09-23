@@ -16,6 +16,7 @@ module.exports = {
         'max-len': ['error', { code: 120 }],
         'linebreak-style': ['error', 'windows'],
         indent: ['error', 4],
+        'import/no-unresolved': 'off', // TODO: fix jest aliases
     },
     plugins: ['jest'],
 };

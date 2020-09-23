@@ -22,7 +22,10 @@ export const addPlant = async (req, res) => {
 
 export const getAllPlants = async (req, res) => {
     try {
-        const plants = await Plant.findAll({ where: { userId: res.locals.user.id } });
+        const plants = await Plant.findAll({
+            where: { userId: res.locals.user.id },
+            include: [{ model: Variety, as: 'variety' }],
+        });
         res.status(200).send(plants);
     } catch (error) {
         res.status(500).send({ message: error.message });

@@ -41,6 +41,10 @@ describe('Varieties GET', () => {
             expect(res.body).toEqual(JSON.parse(JSON.stringify([variety1, variety2])));
             expect(res.statusCode).toEqual(200);
         });
+
+        it('varieties that match query', async () => {
+            // TODO: implement
+        });
     });
 
     describe('does not list varieties', () => {

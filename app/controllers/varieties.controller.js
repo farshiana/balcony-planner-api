@@ -1,3 +1,4 @@
+import { Op } from 'sequelize';
 import db from '../models/models';
 
 const { Variety, Genus } = db;
@@ -25,7 +26,7 @@ export const addVariety = async (req, res) => {
 
 export const getAllVarieties = async (req, res) => {
     try {
-        const { genusId } = req.query;
+        const { genusId, query } = req.query;
         if (genusId) {
             const genus = await Genus.findByPk(genusId);
             if (!genus) {
@@ -36,7 +37,12 @@ export const getAllVarieties = async (req, res) => {
             return res.status(200).send(varieties);
         }
 
-        const varieties = await Variety.findAll();
+        const where = {};
+        if (query) {
+            where.name = { [Op.like]: `%${query}%` };
+        }
+
+        const varieties = await Variety.findAll({ where });
         return res.status(200).send(varieties);
     } catch (error) {
         return res.status(500).send({ message: error.message });
