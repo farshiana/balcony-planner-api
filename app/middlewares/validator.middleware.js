@@ -1,7 +1,7 @@
 import Joi from 'joi';
 
 export default (schema, property = 'body') => (req, res, next) => {
-    const { error, value } = Joi.object().keys(schema).validate(req[property]);
+    const { error, value } = Joi.object(schema).options({ stripUnknown: true }).validate(req[property]);
 
     if (error) {
         const { details } = error;

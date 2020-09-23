@@ -43,7 +43,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 store.sync();
-db.sequelize.sync({ force: process.env.NODE_ENV === 'development' });
+db.sequelize.sync();
 
 auth(app);
 balconies(app);
