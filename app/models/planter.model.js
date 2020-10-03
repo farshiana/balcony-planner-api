@@ -16,6 +16,10 @@ export default (sequelize, Sequelize) => {
             type: Sequelize.ENUM({ values: SHAPES }),
             allowNull: false,
         },
+        position: {
+            type: Sequelize.JSON,
+            allowNull: false,
+        },
         dimensions: {
             type: Sequelize.JSON,
             allowNull: false,

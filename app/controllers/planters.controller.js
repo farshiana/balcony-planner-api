@@ -7,6 +7,7 @@ export const addPlanter = async (req, res) => {
         const planter = await res.locals.user.createPlanter({
             name: req.body.name,
             shape: req.body.shape,
+            position: req.body.position,
             dimensions: req.body.dimensions,
             color: req.body.color,
             exposure: req.body.exposure,
@@ -41,6 +42,7 @@ export const updatePlanter = async (req, res) => {
         await planter.update({
             name: req.body.name,
             shape: req.body.shape,
+            position: req.body.position,
             dimensions: req.body.dimensions,
             color: req.body.color,
             exposure: req.body.exposure,

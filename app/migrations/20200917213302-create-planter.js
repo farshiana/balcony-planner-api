@@ -15,6 +15,10 @@ module.exports = {
                 type: Sequelize.ENUM({ values: ['circle', 'square', 'rectangle'] }),
                 allowNull: false,
             },
+            position: {
+                type: Sequelize.JSON,
+                allowNull: false,
+            },
             dimensions: {
                 type: Sequelize.JSON,
                 allowNull: false,
