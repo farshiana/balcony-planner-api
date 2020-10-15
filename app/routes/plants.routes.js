@@ -7,7 +7,7 @@ import {
 import validator from '../middlewares/validator.middleware';
 import { checkAuth } from '../middlewares/auth.middleware';
 
-const notes = Joi.string().trim();
+const notes = Joi.string().trim().allow('');
 const varietyId = Joi.string().uuid().required();
 
 export default (app) => {
