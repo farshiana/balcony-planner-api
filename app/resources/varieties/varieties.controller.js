@@ -1,5 +1,5 @@
 import { Op } from 'sequelize';
-import db from '../models/models';
+import db from '../../models/models';
 
 const { Variety, Genus } = db;
 

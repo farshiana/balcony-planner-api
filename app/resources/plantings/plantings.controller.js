@@ -1,4 +1,4 @@
-import db from '../models/models';
+import db from '../../models/models';
 
 const { Planter, Planting, Variety } = db;
 

@@ -5,13 +5,13 @@ import logger from 'morgan';
 import session from 'express-session';
 import connect from 'connect-session-sequelize';
 import helmet from 'helmet';
-import auth from './routes/auth.routes';
-import balconies from './routes/balconies.routes';
-import genera from './routes/genera.routes';
-import varieties from './routes/varieties.routes';
-import planters from './routes/planters.routes';
-import plants from './routes/plants.routes';
-import plantings from './routes/plantings.routes';
+import authRouter from './resources/auth/auth.router';
+import balconiesRouter from './resources/balconies/balconies.router';
+import generaRouter from './resources/genera/genera.router';
+import varietiesRouter from './resources/varieties/varieties.router';
+import plantersRouter from './resources/planters/planters.router';
+import plantsRouter from './resources/plants/plants.router';
+import plantingsRouter from './resources/plantings/plantings.router';
 import db from './models/models';
 import config from './config/auth.config';
 
@@ -45,13 +45,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 store.sync();
 db.sequelize.sync();
 
-auth(app);
-balconies(app);
-genera(app);
-varieties(app);
-planters(app);
-plants(app);
-plantings(app);
+app.use('/auth', authRouter);
+app.use('/balconies', balconiesRouter);
+app.use('/genera', generaRouter);
+app.use('/varieties', varietiesRouter);
+app.use('/planters', plantersRouter);
+app.use('/plants', plantsRouter);
+app.use('/plantings', plantingsRouter);
 
 app.listen(PORT, () => { console.log(`Server is running on port ${PORT}.`); });
 

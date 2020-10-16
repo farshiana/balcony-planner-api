@@ -1,6 +1,6 @@
 import bcrypt from 'bcryptjs';
-import db from '../models/models';
-import { ROLE_ADMIN } from '../constants';
+import db from '../../models/models';
+import { ROLE_ADMIN } from '../../constants';
 
 const { User, Balcony } = db;
 
