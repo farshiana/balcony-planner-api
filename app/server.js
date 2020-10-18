@@ -12,8 +12,10 @@ import varietiesRouter from './resources/varieties/varieties.router';
 import plantersRouter from './resources/planters/planters.router';
 import plantsRouter from './resources/plants/plants.router';
 import plantingsRouter from './resources/plantings/plantings.router';
+import imagesRouter from './resources/images/images.router';
 import db from './models/models';
 import config from './config/auth.config';
+import { checkAuth } from './middlewares/auth.middleware';
 
 const authConfig = config[process.env.NODE_ENV];
 
@@ -45,6 +47,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 store.sync();
 db.sequelize.sync();
 
+app.all('*', checkAuth);
+
 app.use('/auth', authRouter);
 app.use('/balconies', balconiesRouter);
 app.use('/genera', generaRouter);
@@ -52,6 +56,7 @@ app.use('/varieties', varietiesRouter);
 app.use('/planters', plantersRouter);
 app.use('/plants', plantsRouter);
 app.use('/plantings', plantingsRouter);
+app.use('/images', imagesRouter);
 
 app.listen(PORT, () => { console.log(`Server is running on port ${PORT}.`); });
 

@@ -18,6 +18,8 @@ export const checkDuplicates = async (req, res, next) => {
 };
 
 export const checkAuth = async (req, res, next) => {
+    if (['/auth/register', '/auth/login'].includes(req.path)) return next();
+
     if (req.session.userId) {
         const user = await User.findByPk(req.session.userId);
 

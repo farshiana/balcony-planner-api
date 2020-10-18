@@ -6,6 +6,7 @@ export const addGenus = async (req, res) => {
     try {
         const genus = await Genus.create({
             name: req.body.name,
+            imageUrl: req.body.imageUrl,
             category: req.body.category,
         });
         res.status(201).send(genus);

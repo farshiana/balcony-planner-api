@@ -12,6 +12,11 @@ module.exports = {
                 allowNull: false,
                 unique: true,
             },
+            imageUrl: {
+                type: Sequelize.STRING,
+                allowNull: false,
+                unique: true,
+            },
             category: {
                 type: Sequelize.ENUM({ values: ['fruits', 'herbs', 'vegetables'] }),
                 allowNull: false,

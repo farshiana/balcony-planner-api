@@ -2,7 +2,7 @@ import Joi from 'joi';
 import { Router } from 'express';
 import { addVariety, getAllVarieties, updateVariety } from './varieties.controller';
 import validator from '../../middlewares/validator.middleware';
-import { checkAuth, checkAdmin } from '../../middlewares/auth.middleware';
+import { checkAdmin } from '../../middlewares/auth.middleware';
 import { EXPOSURES, WATERINGS } from '../../constants';
 import { checkDuplicates } from '../../middlewares/varieties.middleware';
 
@@ -15,12 +15,12 @@ const harvest = Joi.array().items(Joi.number().min(0).max(11)).max(12).required(
 const genusId = Joi.string().uuid().required();
 
 const router = Router();
-router.route('/', checkAuth)
+router.route('/')
     .post(checkAdmin, validator({
         name, exposure, watering, seed, plant, harvest, genusId,
     }), checkDuplicates, addVariety)
     .get(getAllVarieties);
-router.put('/:varietyId', checkAuth, checkAdmin, validator({
+router.put('/:varietyId', checkAdmin, validator({
     name, exposure, watering, seed, plant, harvest,
 }), checkDuplicates, updateVariety);
 
