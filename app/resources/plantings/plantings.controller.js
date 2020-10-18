@@ -20,6 +20,7 @@ export const addPlanting = async (req, res) => {
         }
 
         const planting = await Planting.create({
+            position: req.body.position,
             seed: req.body.seed,
             plant: req.body.plant,
             harvest: req.body.harvest,
@@ -50,6 +51,7 @@ export const updatePlanting = async (req, res) => {
         }
 
         await planting.update({
+            position: req.body.position,
             seed: req.body.seed,
             plant: req.body.plant,
             harvest: req.body.harvest,

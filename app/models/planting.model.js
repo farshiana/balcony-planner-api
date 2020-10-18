@@ -5,6 +5,10 @@ export default (sequelize, Sequelize) => sequelize.define('plantings', {
         allowNull: false,
         defaultValue: Sequelize.UUIDV4,
     },
+    position: {
+        type: Sequelize.JSON,
+        allowNull: false,
+    },
     seed: {
         type: Sequelize.JSON,
         allowNull: false,
