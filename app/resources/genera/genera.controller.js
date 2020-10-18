@@ -33,6 +33,7 @@ export const updateGenus = async (req, res) => {
 
         await genus.update({
             name: req.body.name,
+            imageUrl: req.body.imageUrl,
             category: req.body.category,
         });
         return res.status(200).send(genus);

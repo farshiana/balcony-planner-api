@@ -14,6 +14,6 @@ const router = Router();
 router.route('/')
     .post(checkAdmin, validator({ name, imageUrl, category }), checkDuplicates, addGenus)
     .get(getAllGenera);
-router.put('/:genusId', checkAdmin, validator({ name, category }), checkDuplicates, updateGenus);
+router.put('/:genusId', checkAdmin, validator({ name, imageUrl, category }), checkDuplicates, updateGenus);
 
 export default router;
