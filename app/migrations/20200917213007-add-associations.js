@@ -48,10 +48,10 @@ module.exports = {
             },
             onDelete: 'CASCADE',
         }),
-        queryInterface.addColumn('plantings', 'varietyId', {
+        queryInterface.addColumn('plantings', 'plantId', {
             type: Sequelize.UUID,
             references: {
-                model: 'varieties',
+                model: 'plants',
                 key: 'id',
             },
             onDelete: 'CASCADE',
@@ -64,6 +64,6 @@ module.exports = {
         queryInterface.removeColumn('plants', 'varietyId'),
         queryInterface.removeColumn('planters', 'userId'),
         queryInterface.removeColumn('plantings', 'planterId'),
-        queryInterface.removeColumn('plantings', 'varietyId'),
+        queryInterface.removeColumn('plantings', 'plantId'),
     ]),
 };

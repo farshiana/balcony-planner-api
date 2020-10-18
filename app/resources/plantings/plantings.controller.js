@@ -1,6 +1,6 @@
 import db from '../../models/models';
 
-const { Planter, Planting, Variety } = db;
+const { Planter, Planting, Plant } = db;
 
 export const addPlanting = async (req, res) => {
     try {
@@ -9,13 +9,18 @@ export const addPlanting = async (req, res) => {
             return res.status(404).send({ message: 'Planter does not exist' });
         }
 
-        const variety = await Variety.findByPk(req.body.varietyId);
-        if (!variety) {
-            return res.status(404).send({ message: 'Variety does not exist' });
+        const hasPlanter = await res.locals.user.hasPlanter(planter);
+        if (!hasPlanter) {
+            return res.status(401).send({ message: 'You cannot create this planting' });
         }
 
-        const belongs = await res.locals.user.hasPlanter(planter);
-        if (!belongs) {
+        const plant = await Plant.findByPk(req.body.plantId);
+        if (!plant) {
+            return res.status(404).send({ message: 'Plant does not exist' });
+        }
+
+        const hasPlant = await res.locals.user.hasPlant(plant);
+        if (!hasPlant) {
             return res.status(401).send({ message: 'You cannot create this planting' });
         }
 
@@ -25,7 +30,7 @@ export const addPlanting = async (req, res) => {
             plant: req.body.plant,
             harvest: req.body.harvest,
             planterId: req.body.planterId,
-            varietyId: req.body.varietyId,
+            plantId: req.body.plantId,
         });
         return res.status(201).send(planting);
     } catch (error) {

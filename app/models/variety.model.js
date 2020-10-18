@@ -53,10 +53,6 @@ export default (sequelize, Sequelize) => {
             foreignKey: 'genusId',
             as: 'genus',
         });
-        Variety.hasMany(models.Planting, {
-            foreignKey: 'varietyId',
-            as: 'plantings',
-        });
     };
 
     return Variety;
