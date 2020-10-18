@@ -13,6 +13,11 @@ export default (sequelize, Sequelize) => {
             allowNull: false,
             unique: true,
         },
+        imageUrl: {
+            type: Sequelize.STRING,
+            allowNull: false,
+            unique: true,
+        },
         exposure: {
             type: Sequelize.ENUM({ values: EXPOSURES }),
             allowNull: false,

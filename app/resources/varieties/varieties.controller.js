@@ -12,6 +12,7 @@ export const addVariety = async (req, res) => {
 
         const variety = await genus.createVariety({
             name: req.body.name,
+            imageUrl: req.body.imageUrl,
             exposure: req.body.exposure,
             watering: req.body.watering,
             seed: req.body.seed,
@@ -58,6 +59,7 @@ export const updateVariety = async (req, res) => {
 
         await variety.update({
             name: req.body.name,
+            imageUrl: req.body.imageUrl,
             exposure: req.body.exposure,
             watering: req.body.watering,
             seed: req.body.seed,

@@ -7,13 +7,12 @@ import { CATEGORIES } from '../../constants';
 import { checkDuplicates } from '../../middlewares/genera.middleware';
 
 const name = Joi.string().trim().lowercase().required();
-const imageUrl = Joi.string().uri().required(); // TODO: testvalidation (http + domain)
 const category = Joi.valid(...CATEGORIES).required();
 
 const router = Router();
 router.route('/')
-    .post(checkAdmin, validator({ name, imageUrl, category }), checkDuplicates, addGenus)
+    .post(checkAdmin, validator({ name, category }), checkDuplicates, addGenus)
     .get(getAllGenera);
-router.put('/:genusId', checkAdmin, validator({ name, imageUrl, category }), checkDuplicates, updateGenus);
+router.put('/:genusId', checkAdmin, validator({ name, category }), checkDuplicates, updateGenus);
 
 export default router;

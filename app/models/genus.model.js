@@ -13,11 +13,6 @@ export default (sequelize, Sequelize) => {
             allowNull: false,
             unique: true,
         },
-        imageUrl: {
-            type: Sequelize.STRING,
-            allowNull: false,
-            unique: true,
-        },
         category: {
             type: Sequelize.ENUM({ values: CATEGORIES }),
             allowNull: false,

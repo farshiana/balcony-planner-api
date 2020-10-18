@@ -12,6 +12,11 @@ module.exports = {
                 allowNull: false,
                 unique: true,
             },
+            imageUrl: {
+                type: Sequelize.STRING,
+                allowNull: false,
+                unique: true,
+            },
             exposure: {
                 type: Sequelize.ENUM({ values: ['shade', 'sun', 'partial'] }),
                 allowNull: false,
