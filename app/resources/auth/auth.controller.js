@@ -50,4 +50,14 @@ export const login = async (req, res) => {
     }
 };
 
+export const logout = async (req, res) => {
+    try {
+        await req.session.destroy();
+
+        return res.status(204);
+    } catch (error) {
+        return res.status(500).send({ message: error.message });
+    }
+};
+
 export const getCurrentUser = (req, res) => res.status(200).send(res.locals.user);

@@ -6,7 +6,6 @@ import db from '@/models/models';
 import auth from '../../factories/auth.factory';
 
 const { User } = db;
-const route = '/auth/register';
 
 describe('Auth POST', () => {
     let params;
@@ -19,6 +18,8 @@ describe('Auth POST', () => {
     });
 
     describe('registers user', () => {
+        const route = '/auth/register';
+
         it('with balcony', async () => {
             const res = await request(app).post(route).send(params);
             const user = await User.findByPk(res.body.id);
@@ -38,6 +39,8 @@ describe('Auth POST', () => {
     });
 
     describe('does not register user', () => {
+        const route = '/auth/register';
+
         it('with existing username', async () => {
             await auth(params);
             const res = await request(app).post(route).send(params);
@@ -63,6 +66,28 @@ describe('Auth POST', () => {
 
             // expect(res.body.message).toEqual('Password...'); TODO: send message
             expect(res.statusCode).toEqual(400);
+        });
+    });
+
+    describe('logs user out', () => {
+        const route = '/auth/logout';
+
+        it('when user is authenticated', async () => {
+            const { cookie } = await auth();
+            const res = await request(app).post(route).set('Cookie', cookie).send();
+
+            expect(res.statusCode).toEqual(204);
+        });
+    });
+
+    describe('does not log user out', () => {
+        const route = '/auth/logout';
+
+        it('when user is not authenticated', async () => {
+            const res = await request(app).post(route).send();
+
+            expect(res.body.message).toEqual('Authentication is required');
+            expect(res.statusCode).toEqual(401);
         });
     });
 });
