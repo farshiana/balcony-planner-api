@@ -4,6 +4,7 @@ import app from '@/server';
 import auth from '../../factories/auth.factory';
 import createGenus from '../../factories/genus.factory';
 import createVariety from '../../factories/variety.factory';
+import createPlant from '../../factories/plant.factory';
 import createPlanter from '../../factories/planter.factory';
 import createUser from '../../factories/user.factory';
 import createPlanting from '../../factories/planting.factory';
@@ -14,11 +15,13 @@ describe('Plantings PUT', () => {
     let cookie;
     let userId;
     let variety;
+    let plant;
     let planter;
     beforeAll(async (done) => {
         ({ cookie, userId } = await auth());
         const genus = await createGenus();
         variety = await createVariety({ genusId: genus.id });
+        plant = await createPlant({ userId, varietyId: variety.id });
         planter = await createPlanter({ userId });
         done();
     });
@@ -27,11 +30,12 @@ describe('Plantings PUT', () => {
     let planting;
     beforeEach(async (done) => {
         params = {
+            position: { left: faker.random.number(), top: faker.random.number() },
             seed: [0, 1, 2],
             plant: [3, 4, 5],
             harvest: [6, 7, 8],
         };
-        planting = await createPlanting({ varietyId: variety.id, planterId: planter.id });
+        planting = await createPlanting({ plantId: plant.id, planterId: planter.id });
         done();
     });
 
@@ -66,29 +70,13 @@ describe('Plantings PUT', () => {
         it('that belongs to another user', async () => {
             const user = await createUser();
             const planter2 = await createPlanter({ userId: user.id });
-            const target = await createPlanting({ planterId: planter2.id });
+            const target = await createPlanting({ plantId: plant.id, planterId: planter2.id });
 
             const res = await request(app).put(`${route}/${target.id}`)
                 .set('Cookie', cookie).send(params);
 
             expect(res.body.message).toEqual('You cannot edit this planting');
             expect(res.statusCode).toEqual(401);
-        });
-
-        it('with varietyId', async () => {
-            const res = await request(app).put(`${route}/${planting.id}`)
-                .set('Cookie', cookie).send({ ...params, varietyId: faker.random.uuid() });
-
-            expect(res.body.message).toEqual('"varietyId" is not allowed');
-            expect(res.statusCode).toEqual(400);
-        });
-
-        it('with planterId', async () => {
-            const res = await request(app).put(`${route}/${planting.id}`)
-                .set('Cookie', cookie).send({ ...params, planterId: faker.random.uuid() });
-
-            expect(res.body.message).toEqual('"planterId" is not allowed');
-            expect(res.statusCode).toEqual(400);
         });
 
         it('with invalid seed', async () => {

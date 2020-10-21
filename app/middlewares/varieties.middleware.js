@@ -5,7 +5,12 @@ const { Variety } = db;
 
 // eslint-disable-next-line import/prefer-default-export
 export const checkDuplicates = async (req, res, next) => {
-    const variety = await Variety.findOne({ where: { name: req.body.name, id: { [Op.not]: req.id } } });
+    const where = { name: req.body.name };
+    if (req.id) {
+        where.id = { [Op.not]: req.id };
+    }
+
+    const variety = await Variety.findOne({ where });
     if (variety) {
         return res.status(400).send({ message: 'Variety already exists' });
     }

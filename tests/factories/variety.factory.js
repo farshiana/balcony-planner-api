@@ -4,7 +4,7 @@ import db from '@/models/models';
 
 export default (props = {}) => db.Variety.create({
     name: faker.lorem.word(),
-    imageUrl: faker.image.imageUrl(),
+    imageUrl: faker.internet.url(),
     exposure: EXPOSURES[0],
     watering: WATERINGS[0],
     seed: [0, 1],

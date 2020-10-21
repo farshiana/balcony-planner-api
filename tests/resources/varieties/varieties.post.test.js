@@ -23,6 +23,7 @@ describe('Varieties POST', () => {
     beforeEach(() => {
         params = {
             name: faker.lorem.word(),
+            imageUrl: faker.internet.url(),
             exposure: EXPOSURES[0],
             watering: WATERINGS[0],
             seed: [0, 1, 2],

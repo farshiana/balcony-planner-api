@@ -19,6 +19,7 @@ describe('Varieties PUT', () => {
     beforeEach(async (done) => {
         params = {
             name: faker.lorem.word(),
+            imageUrl: faker.internet.url(),
             exposure: EXPOSURES[1],
             watering: WATERINGS[1],
             seed: [0, 1, 2],
@@ -82,14 +83,6 @@ describe('Varieties PUT', () => {
                 .set('Cookie', cookie).send({ ...params, watering: 'invalid' });
 
             // expect(res.body.message).toEqual(''); TODO: custom message
-            expect(res.statusCode).toEqual(400);
-        });
-
-        it('with genusId', async () => {
-            const res = await request(app).put(`${route}/${variety.id}`)
-                .set('Cookie', cookie).send({ ...params, genusId: faker.random.uuid() });
-
-            expect(res.body.message).toEqual('"genusId" is not allowed');
             expect(res.statusCode).toEqual(400);
         });
 

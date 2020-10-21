@@ -5,6 +5,7 @@ import db from '@/models/models';
 import auth from '../../factories/auth.factory';
 import createGenus from '../../factories/genus.factory';
 import createVariety from '../../factories/variety.factory';
+import createPlant from '../../factories/plant.factory';
 import createPlanter from '../../factories/planter.factory';
 import createUser from '../../factories/user.factory';
 
@@ -15,11 +16,13 @@ describe('Plantings POST', () => {
     let cookie;
     let userId;
     let variety;
+    let plant;
     let planter;
     beforeAll(async (done) => {
         ({ cookie, userId } = await auth());
         const genus = await createGenus();
         variety = await createVariety({ genusId: genus.id });
+        plant = await createPlant({ userId, varietyId: variety.id });
         planter = await createPlanter({ userId });
         done();
     });
@@ -27,10 +30,11 @@ describe('Plantings POST', () => {
     let params;
     beforeEach(() => {
         params = {
+            position: { left: faker.random.number(), top: faker.random.number() },
             seed: [0, 1, 2],
             plant: [3, 4, 5],
             harvest: [6, 7, 8],
-            varietyId: variety.id,
+            plantId: plant.id,
             planterId: planter.id,
         };
     });
@@ -58,11 +62,11 @@ describe('Plantings POST', () => {
             // TODO: index + check
         });
 
-        it('with variety that does not exist', async () => {
+        it('with plant that does not exist', async () => {
             const res = await request(app).post(route)
-                .set('Cookie', cookie).send({ ...params, varietyId: faker.random.uuid() });
+                .set('Cookie', cookie).send({ ...params, plantId: faker.random.uuid() });
 
-            expect(res.body.message).toEqual('Variety does not exist');
+            expect(res.body.message).toEqual('Plant does not exist');
             expect(res.statusCode).toEqual(404);
         });
 

@@ -25,6 +25,7 @@ describe('Plants GET', () => {
             const plant2 = await createPlant(params);
             const res = await request(app).get(route).set('Cookie', cookie).send();
 
+            // TODO: fix
             expect(res.body).toEqual(JSON.parse(JSON.stringify([plant1, plant2])));
             expect(res.statusCode).toEqual(200);
         });

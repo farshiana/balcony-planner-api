@@ -5,7 +5,11 @@ const { Genus } = db;
 
 // eslint-disable-next-line import/prefer-default-export
 export const checkDuplicates = async (req, res, next) => {
-    const genus = await Genus.findOne({ where: { name: req.body.name, id: { [Op.not]: req.id } } });
+    const where = { name: req.body.name };
+    if (req.id) {
+        where.id = { [Op.not]: req.id };
+    }
+    const genus = await Genus.findOne({ where });
     if (genus) {
         return res.status(400).send({ message: 'Genus already exists' });
     }
