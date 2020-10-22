@@ -3,6 +3,7 @@ import faker from 'faker';
 import app from '@/server';
 import { EXPOSURES, WATERINGS } from '@/constants';
 import auth from '../../factories/auth.factory';
+import createGenus from '../../factories/genus.factory';
 import createVariety from '../../factories/variety.factory';
 
 const route = '/varieties';
@@ -18,7 +19,7 @@ describe('Varieties PUT', () => {
     let variety;
     beforeEach(async (done) => {
         params = {
-            name: faker.lorem.word(),
+            name: faker.random.word(),
             imageUrl: faker.internet.url(),
             exposure: EXPOSURES[1],
             watering: WATERINGS[1],
@@ -26,7 +27,8 @@ describe('Varieties PUT', () => {
             plant: [3, 4, 5],
             harvest: [6, 7, 8],
         };
-        variety = await createVariety();
+        const genus = await createGenus();
+        variety = await createVariety({ genusId: genus.id });
         done();
     });
 

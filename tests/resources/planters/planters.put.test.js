@@ -20,7 +20,7 @@ describe('Planters PUT', () => {
     let planter;
     beforeEach(async (done) => {
         params = {
-            name: faker.lorem.word(),
+            name: faker.random.word(),
             shape: SHAPES[1],
             position: { left: faker.random.number(), top: faker.random.number() },
             dimensions: { width: faker.random.number() },

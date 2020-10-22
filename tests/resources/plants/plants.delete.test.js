@@ -1,15 +1,17 @@
 import request from 'supertest';
 import faker from 'faker';
 import app from '@/server';
+import db from '@/models/models';
 import auth from '../../factories/auth.factory';
 import createUser from '../../factories/user.factory';
 import createGenus from '../../factories/genus.factory';
 import createVariety from '../../factories/variety.factory';
 import createPlant from '../../factories/plant.factory';
 
+const { Plant } = db;
 const route = '/plants';
 
-describe('Plants PUT', () => {
+describe('Plants DELETE', () => {
     let cookie;
     let userId;
     beforeAll(async (done) => {
@@ -17,41 +19,35 @@ describe('Plants PUT', () => {
         done();
     });
 
-    let params;
     let variety;
     let plant;
     beforeEach(async (done) => {
-        params = { notes: faker.lorem.sentences() };
         const genus = await createGenus();
         variety = await createVariety({ genusId: genus.id });
         plant = await createPlant({ userId, varietyId: variety.id });
         done();
     });
 
-    describe('updates plant', () => {
-        it('with params', async () => {
-            const res = await request(app).put(`${route}/${plant.id}`)
-                .set('Cookie', cookie).send(params);
+    it('deletes plant', async () => {
+        const res = await request(app).delete(`${route}/${plant.id}`)
+            .set('Cookie', cookie).send();
 
-            await plant.reload();
-            expect(res.body).toMatchObject(params);
-            expect(res.body).toEqual(JSON.parse(JSON.stringify(plant)));
-            expect(res.statusCode).toEqual(200);
-        });
-        // TODO: without trucId x2
+        const deleted = await Plant.findByPk(plant.id);
+        expect(deleted).toBe(null);
+        expect(res.statusCode).toEqual(204);
     });
 
-    describe('does not update plant', () => {
+    describe('does not delete plant', () => {
         it('with unauthenticated user', async () => {
-            const res = await request(app).put(`${route}/${plant.id}`).send(params);
+            const res = await request(app).delete(`${route}/${plant.id}`).send();
 
             expect(res.body.message).toEqual('Authentication is required');
             expect(res.statusCode).toEqual(401);
         });
 
         it('that does not exist', async () => {
-            const res = await request(app).put(`${route}/${faker.random.uuid()}`)
-                .set('Cookie', cookie).send(params);
+            const res = await request(app).delete(`${route}/${faker.random.uuid()}`)
+                .set('Cookie', cookie).send();
 
             expect(res.body.message).toEqual('Plant does not exist');
             expect(res.statusCode).toEqual(404);
@@ -61,10 +57,10 @@ describe('Plants PUT', () => {
             const user = await createUser();
             const target = await createPlant({ userId: user.id, varietyId: variety.id });
 
-            const res = await request(app).put(`${route}/${target.id}`)
-                .set('Cookie', cookie).send(params);
+            const res = await request(app).delete(`${route}/${target.id}`)
+                .set('Cookie', cookie).send();
 
-            expect(res.body.message).toEqual('You cannot edit this plant');
+            expect(res.body.message).toEqual('You cannot delete this plant');
             expect(res.statusCode).toEqual(401);
         });
     });

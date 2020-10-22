@@ -24,7 +24,7 @@ describe('Planters GET', () => {
     describe('lists', () => {
         it('all planters', async () => {
             const params = {
-                name: faker.lorem.word(),
+                name: faker.random.word(),
                 shape: SHAPES[0],
                 position: { left: faker.random.number(), top: faker.random.number() },
                 dimensions: { width: faker.random.number() },
@@ -45,7 +45,7 @@ describe('Planters GET', () => {
 
         it('planters with plantings', async () => {
             const params = {
-                name: faker.lorem.word(),
+                name: faker.random.word(),
                 shape: SHAPES[0],
                 position: { left: faker.random.number(), top: faker.random.number() },
                 dimensions: { width: faker.random.number() },

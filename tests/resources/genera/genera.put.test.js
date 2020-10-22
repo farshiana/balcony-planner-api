@@ -18,7 +18,7 @@ describe('Genera PUT', () => {
     let genus;
     beforeEach(async (done) => {
         params = {
-            name: faker.lorem.word(),
+            name: faker.random.word(),
             category: CATEGORIES[1],
         };
         genus = await createGenus();

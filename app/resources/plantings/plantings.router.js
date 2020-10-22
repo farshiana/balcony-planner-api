@@ -1,6 +1,6 @@
 import Joi from 'joi';
 import { Router } from 'express';
-import { addPlanting, updatePlanting } from './plantings.controller';
+import { addPlanting, updatePlanting, deletePlanting } from './plantings.controller';
 import validator from '../../middlewares/validator.middleware';
 
 const position = Joi.object().required(); // TODO: add more validation
@@ -17,5 +17,6 @@ router.post('/', validator({
 router.put('/:plantingId', validator({
     position, seed, plant, harvest,
 }), updatePlanting);
+router.delete('/:plantingId', deletePlanting);
 
 export default router;

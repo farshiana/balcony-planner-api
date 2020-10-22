@@ -1,9 +1,9 @@
 import request from 'supertest';
 import app from '@/server';
 import auth from '../../factories/auth.factory';
-import createPlant from '../../factories/plant.factory';
 import createGenus from '../../factories/genus.factory';
 import createVariety from '../../factories/variety.factory';
+import createPlant from '../../factories/plant.factory';
 
 const route = '/plants';
 

@@ -1,6 +1,8 @@
 import Joi from 'joi';
 import { Router } from 'express';
-import { addVariety, getAllVarieties, updateVariety } from './varieties.controller';
+import {
+    addVariety, getAllVarieties, updateVariety, deleteVariety,
+} from './varieties.controller';
 import validator from '../../middlewares/validator.middleware';
 import { checkAdmin } from '../../middlewares/auth.middleware';
 import { EXPOSURES, WATERINGS } from '../../constants';
@@ -24,5 +26,6 @@ router.route('/')
 router.put('/:varietyId', checkAdmin, validator({
     name, imageUrl, exposure, watering, seed, plant, harvest,
 }), checkDuplicates, updateVariety);
+router.delete('/:varietyId', checkAdmin, deleteVariety);
 
 export default router;

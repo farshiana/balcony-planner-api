@@ -22,7 +22,7 @@ describe('Varieties POST', () => {
     let params;
     beforeEach(() => {
         params = {
-            name: faker.lorem.word(),
+            name: faker.random.word(),
             imageUrl: faker.internet.url(),
             exposure: EXPOSURES[0],
             watering: WATERINGS[0],
@@ -58,7 +58,7 @@ describe('Varieties POST', () => {
 
         it('with genus that does not exist', async () => {
             const res = await request(app).post(route).set('Cookie', cookie)
-                .send({ ...params, name: faker.lorem.word(), genusId: faker.random.uuid() });
+                .send({ ...params, name: faker.random.word(), genusId: faker.random.uuid() });
 
             expect(res.body.message).toEqual('Genus does not exist');
             expect(res.statusCode).toEqual(404);

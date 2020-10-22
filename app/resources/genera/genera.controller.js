@@ -39,3 +39,17 @@ export const updateGenus = async (req, res) => {
         return res.status(500).send({ message: error.message });
     }
 };
+
+export const deleteGenus = async (req, res) => {
+    try {
+        const genus = await Genus.findByPk(req.params.genusId);
+        if (!genus) {
+            return res.status(404).send({ message: 'Genus does not exist' });
+        }
+
+        await genus.destroy();
+        return res.status(204).send();
+    } catch (error) {
+        return res.status(500).send({ message: error.message });
+    }
+};

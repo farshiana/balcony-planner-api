@@ -19,7 +19,7 @@ describe('Genera POST', () => {
     let params;
     beforeEach(() => {
         params = {
-            name: faker.lorem.word(),
+            name: faker.random.word(),
             category: CATEGORIES[1],
         };
     });

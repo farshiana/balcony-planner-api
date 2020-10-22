@@ -71,3 +71,17 @@ export const updateVariety = async (req, res) => {
         return res.status(500).send({ message: error.message });
     }
 };
+
+export const deleteVariety = async (req, res) => {
+    try {
+        const variety = await Variety.findByPk(req.params.varietyId);
+        if (!variety) {
+            return res.status(404).send({ message: 'Variety does not exist' });
+        }
+
+        await variety.destroy();
+        return res.status(204).send();
+    } catch (error) {
+        return res.status(500).send({ message: error.message });
+    }
+};

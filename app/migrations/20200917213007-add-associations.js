@@ -2,6 +2,7 @@ module.exports = {
     up: (queryInterface, Sequelize) => Promise.all([
         queryInterface.addColumn('balconies', 'userId', {
             type: Sequelize.UUID,
+            allowNull: false,
             references: {
                 model: 'users',
                 key: 'id',
@@ -10,6 +11,7 @@ module.exports = {
         }),
         queryInterface.addColumn('varieties', 'genusId', {
             type: Sequelize.UUID,
+            allowNull: false,
             references: {
                 model: 'genera',
                 key: 'id',
@@ -18,6 +20,7 @@ module.exports = {
         }),
         queryInterface.addColumn('plants', 'userId', {
             type: Sequelize.UUID,
+            allowNull: false,
             references: {
                 model: 'users',
                 key: 'id',
@@ -26,6 +29,7 @@ module.exports = {
         }),
         queryInterface.addColumn('plants', 'varietyId', {
             type: Sequelize.UUID,
+            allowNull: false,
             references: {
                 model: 'varieties',
                 key: 'id',
@@ -34,6 +38,7 @@ module.exports = {
         }),
         queryInterface.addColumn('planters', 'userId', {
             type: Sequelize.UUID,
+            allowNull: false,
             references: {
                 model: 'users',
                 key: 'id',
@@ -42,6 +47,7 @@ module.exports = {
         }),
         queryInterface.addColumn('plantings', 'planterId', {
             type: Sequelize.UUID,
+            allowNull: false,
             references: {
                 model: 'planters',
                 key: 'id',
@@ -50,6 +56,7 @@ module.exports = {
         }),
         queryInterface.addColumn('plantings', 'plantId', {
             type: Sequelize.UUID,
+            allowNull: false,
             references: {
                 model: 'plants',
                 key: 'id',

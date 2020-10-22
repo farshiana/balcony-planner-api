@@ -1,6 +1,8 @@
 import Joi from 'joi';
 import { Router } from 'express';
-import { addPlanter, getAllPlanters, updatePlanter } from './planters.controller';
+import {
+    addPlanter, getAllPlanters, updatePlanter, deletePlanter,
+} from './planters.controller';
 import validator from '../../middlewares/validator.middleware';
 import { SHAPES, COLORS, EXPOSURES } from '../../constants';
 
@@ -20,5 +22,6 @@ router.route('/')
 router.put('/:planterId', validator({
     name, shape, position, dimensions, color, exposure,
 }), updatePlanter);
+router.delete('/:planterId', deletePlanter);
 
 export default router;

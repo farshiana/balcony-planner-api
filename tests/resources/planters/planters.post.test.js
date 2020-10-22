@@ -18,7 +18,7 @@ describe('Planters POST', () => {
     let params;
     beforeEach(() => {
         params = {
-            name: faker.lorem.word(),
+            name: faker.random.word(),
             shape: SHAPES[0],
             position: { left: faker.random.number(), top: faker.random.number() },
             dimensions: { width: faker.random.number() },

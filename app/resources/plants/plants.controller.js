@@ -39,8 +39,32 @@ export const updatePlant = async (req, res) => {
             return res.status(404).send({ message: 'Plant does not exist' });
         }
 
+        const belongs = await res.locals.user.hasPlant(plant);
+        if (!belongs) {
+            return res.status(401).send({ message: 'You cannot edit this plant' });
+        }
+
         await plant.update({ notes: req.body.notes });
         return res.status(200).send(plant);
+    } catch (error) {
+        return res.status(500).send({ message: error.message });
+    }
+};
+
+export const deletePlant = async (req, res) => {
+    try {
+        const plant = await Plant.findByPk(req.params.plantId);
+        if (!plant) {
+            return res.status(404).send({ message: 'Plant does not exist' });
+        }
+
+        const belongs = await res.locals.user.hasPlant(plant);
+        if (!belongs) {
+            return res.status(401).send({ message: 'You cannot delete this plant' });
+        }
+
+        await plant.destroy();
+        return res.status(204).send();
     } catch (error) {
         return res.status(500).send({ message: error.message });
     }

@@ -1,6 +1,8 @@
 import Joi from 'joi';
 import { Router } from 'express';
-import { addGenus, getAllGenera, updateGenus } from './genera.controller';
+import {
+    addGenus, getAllGenera, updateGenus, deleteGenus,
+} from './genera.controller';
 import validator from '../../middlewares/validator.middleware';
 import { checkAdmin } from '../../middlewares/auth.middleware';
 import { CATEGORIES } from '../../constants';
@@ -14,5 +16,6 @@ router.route('/')
     .post(checkAdmin, validator({ name, category }), checkDuplicates, addGenus)
     .get(getAllGenera);
 router.put('/:genusId', checkAdmin, validator({ name, category }), checkDuplicates, updateGenus);
+router.delete('/:genusId', checkAdmin, deleteGenus);
 
 export default router;

@@ -66,3 +66,27 @@ export const updatePlanting = async (req, res) => {
         return res.status(500).send({ message: error.message });
     }
 };
+
+export const deletePlanting = async (req, res) => {
+    try {
+        const planting = await Planting.findByPk(req.params.plantingId);
+        if (!planting) {
+            return res.status(404).send({ message: 'Planting does not exist' });
+        }
+
+        const planter = await Planter.findByPk(planting.planterId);
+        if (!planter) {
+            return res.status(404).send({ message: 'Planter does not exist' });
+        }
+
+        const belongs = await res.locals.user.hasPlanter(planter);
+        if (!belongs) {
+            return res.status(401).send({ message: 'You cannot delete this planting' });
+        }
+
+        await planting.destroy();
+        return res.status(204).send();
+    } catch (error) {
+        return res.status(500).send({ message: error.message });
+    }
+};
