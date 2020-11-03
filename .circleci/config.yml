@@ -1,0 +1,35 @@
+version: 2.1
+orbs:
+  codecov: codecov/codecov@1.1.1
+jobs:
+  build:
+    working_directory: ~/repo
+    docker:
+      - image: circleci/node:12.18.3
+      - image: circleci/postgres:12
+        environment:
+          POSTGRES_DB: balcony_planner_test
+          POSTGRES_USER: admin
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - run:
+          name: Upgrade yarn
+          command: "sudo npm install -g -f yarn@1.22.4"
+      - restore_cache:
+          key: dependencies-cache-v1-{{ checksum "yarn.lock" }}
+      - run:
+          name: Install Dependencies
+          command: yarn install
+      - save_cache:
+          key: dependencies-cache-v1-{{ checksum "yarn.lock" }}
+          paths:
+            - ./node_modules
+      - run:
+          name: Run linter
+          command: yarn lint
+      - run:
+          name: Run tests
+          command: yarn test --collect-coverage
+      - codecov/upload:
+        file: './coverage/clover.xml'
